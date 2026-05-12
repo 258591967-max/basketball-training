@@ -1,0 +1,1156 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>🏀 曹子骞篮球训练</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    color: #e0e0e0;
+    line-height: 1.7;
+    max-width: 430px;
+    margin: 0 auto;
+    padding-bottom: 80px;
+    min-height: 100vh;
+}
+
+/* 顶部 - 漂亮版红粉渐变 */
+.header-new {
+    background: linear-gradient(135deg, #e94560, #ff6b6b, #ee5a24);
+    padding: 16px 16px 12px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 20px rgba(233,69,96,0.4);
+    border-bottom: 2px solid rgba(255,255,255,0.12);
+}
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.header-left h1 { 
+    color: #fff; 
+    font-size: 20px; 
+    font-weight: 800; 
+    letter-spacing: 1px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+.header-left .date { 
+    color: rgba(255,255,255,0.95); 
+    font-size: 13px; 
+    font-weight: 600; 
+    margin-top: 2px;
+}
+.header-right img {
+    width: 56px; height: 56px;
+    border-radius: 14px;
+    border: 2px solid rgba(255,255,255,0.6);
+    object-fit: cover;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+.header-bottom {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.header-badge {
+    background: rgba(0,0,0,0.25);
+    backdrop-filter: blur(4px);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    color: rgba(200,230,255,0.9);
+    font-weight: 600;
+    border: 1px solid rgba(255,255,255,0.15);
+}
+.header-badge.active { 
+    background: linear-gradient(135deg, #ffd740, #ffab40);
+    color: #1a0a00; 
+    font-weight: 800;
+    box-shadow: 0 0 12px rgba(255,215,64,0.5);
+    border: none;
+    text-shadow: none;
+}
+
+/* 导航 */
+.nav {
+    display: flex;
+    background: rgba(26,26,46,0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(233,69,96,0.3);
+    position: sticky;
+    top: 108px;
+    z-index: 99;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.nav::-webkit-scrollbar { display: none; }
+.nav-item {
+    flex-shrink: 0;
+    padding: 12px 10px;
+    font-size: 12px;
+    color: #7f8c8d;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.3s;
+    font-weight: 500;
+}
+.nav-item.active {
+    color: #ffd740;
+    border-bottom-color: #ffd740;
+    font-weight: 700;
+    text-shadow: none;
+}
+
+/* 页面 */
+.page { display: none; padding: 10px 12px; }
+.page.active { display: block; }
+
+/* 卡片 */
+.card {
+    background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+    backdrop-filter: blur(10px);
+    margin-bottom: 14px;
+    border-radius: 16px;
+    padding: 16px;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+.card-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #ffd740;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.card-title .icon { font-size: 20px; }
+
+/* 今日训练Hero - 红粉渐变 */
+.today-hero {
+    background: linear-gradient(135deg, #e94560, #ff6b6b);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 14px;
+    box-shadow: 0 8px 30px rgba(233,69,96,0.4);
+}
+.today-hero h2 { color: white; font-size: 18px; margin-bottom: 8px; }
+.today-hero .type { 
+    background: rgba(255,255,255,0.2);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    display: inline-block;
+    margin-bottom: 12px;
+}
+.today-hero p { font-size: 12px; color: rgba(255,255,255,0.95); }
+
+/* 今日训练模块 */
+.today-section {
+    background: rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 10px;
+}
+.today-section h3 { color: #82d4ff; font-size: 13px; margin-bottom: 8px; }
+.today-section p { font-size: 12px; color: #b0bec5; }
+.today-section .highlight { color: #ffd740; font-weight: 600; }
+
+/* 训练网格 */
+.action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.action-item {
+    background: rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 14px;
+    cursor: pointer;
+    border: 1px solid rgba(255,255,255,0.08);
+    transition: all 0.3s;
+}
+.action-item:hover, .action-item:active {
+    background: rgba(255,215,64,0.15);
+    border-color: rgba(255,215,64,0.3);
+    transform: scale(1.02);
+}
+.action-item h4 { font-size: 13px; color: #ffd740; margin-bottom: 6px; }
+.action-item p { font-size: 11px; color: #95a5a6; margin-bottom: 4px; }
+.action-item .meta { font-size: 11px; color: #ffab40; font-weight: 600; }
+
+/* 组合卡片 - 红粉风格 */
+.combo-card {
+    background: linear-gradient(135deg, rgba(233,69,96,0.2), rgba(255,215,64,0.1));
+    border: 1px solid rgba(233,69,96,0.4);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 12px;
+}
+.combo-card h4 { font-size: 14px; color: #ffd740; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+.combo-card .steps { font-size: 12px; color: #b0bec5; padding-left: 16px; margin-bottom: 10px; }
+.combo-card .steps li { margin-bottom: 4px; }
+.combo-card .tag-area { 
+    background: rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 11px;
+}
+.combo-card .tag-area .role { color: #82d4ff; margin-bottom: 4px; }
+.combo-card .tag-area .tip { color: #ffab40; }
+
+/* 抖音脚本卡片 - 红粉风格 */
+.douyin-card {
+    background: linear-gradient(135deg, rgba(233,69,96,0.3), rgba(255,107,107,0.2));
+    border: 2px solid rgba(233,69,96,0.5);
+    border-radius: 16px;
+    padding: 14px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 30px rgba(233,69,96,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
+    animation: douyinGlow 2s ease-in-out infinite alternate;
+}
+@keyframes douyinGlow {
+    0% { box-shadow: 0 4px 30px rgba(233,69,96,0.3), inset 0 1px 0 rgba(255,255,255,0.1); }
+    100% { box-shadow: 0 4px 40px rgba(233,69,96,0.45), inset 0 1px 0 rgba(255,255,255,0.15); }
+}
+.douyin-card h4 { font-size: 13px; color: #ff6b6b; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; font-weight: 700; }
+.douyin-card .title-suggest { 
+    font-size: 13px; 
+    color: #ffd740; 
+    background: rgba(255,215,64,0.2);
+    padding: 10px 12px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    font-weight: 700;
+    border: 1px solid rgba(255,215,64,0.4);
+    box-shadow: 0 2px 15px rgba(255,215,64,0.2);
+    text-shadow: 0 0 8px rgba(255,215,64,0.4);
+}
+.douyin-card .script-text { font-size: 11px; color: #e0e0e0; font-style: italic; line-height: 1.8; }
+.douyin-card .video-tip { 
+    font-size: 10px; 
+    color: #82d4ff;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* 推荐动作 */
+.recommend-link {
+    background: rgba(255,215,64,0.1);
+    border: 1px solid rgba(255,215,64,0.3);
+    border-radius: 10px;
+    padding: 8px 12px;
+    margin-top: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 12px rgba(255,215,64,0.15);
+}
+.recommend-link:hover {
+    background: rgba(255,215,64,0.2);
+    transform: translateX(5px);
+    box-shadow: 0 4px 20px rgba(255,215,64,0.25);
+}
+.recommend-link .arrow { color: #ffd740; font-size: 15px; font-weight: 700; }
+.recommend-link .text { font-size: 10px; color: #90a4ae; }
+.recommend-link .name { font-size: 11px; color: #ffd740; font-weight: 700; }
+
+/* 标签 */
+.tag { display: inline-block; font-size: 10px; padding: 3px 8px; border-radius: 8px; margin-right: 4px; margin-bottom: 4px; }
+.tag-green { background: rgba(76,175,80,0.3); color: #81c784; }
+.tag-blue { background: rgba(33,150,243,0.3); color: #64b5f6; }
+.tag-red { background: rgba(233,69,96,0.3); color: #ff8a80; }
+.tag-orange { background: rgba(255,152,0,0.3); color: #ffb74d; }
+.tag-yellow { background: rgba(255,215,64,0.3); color: #ffd740; }
+.tag-purple { background: rgba(156,39,176,0.3); color: #ce93d8; }
+
+/* 周计划 */
+.week-item {
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 10px;
+    border-left: 4px solid #ffd740;
+}
+.week-item.today {
+    border-left-color: #e94560;
+    background: rgba(233,69,96,0.15);
+}
+.week-item h4 { font-size: 14px; color: #ffd740; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+.week-item p { font-size: 12px; color: #b0bec5; }
+.badge {
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 10px;
+    margin-left: 6px;
+}
+.badge-yes { background: #4caf50; color: white; }
+.badge-no { background: rgba(255,255,255,0.2); color: #b0bec5; }
+
+/* 步骤高亮标签 */
+.step-badge {
+    background: linear-gradient(135deg, #e94560, #ff6b6b);
+    color: white;
+    padding: 10px 14px;
+    border-radius: 12px;
+    margin: 6px 0;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 3px 15px rgba(233,69,96,0.35), inset 0 1px 0 rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.1);
+    transition: all 0.3s ease;
+}
+.step-badge:hover {
+    transform: scale(1.01);
+    box-shadow: 0 4px 20px rgba(233,69,96,0.45);
+}
+.step-badge .num {
+    background: rgba(255,255,255,0.25);
+    backdrop-filter: blur(4px);
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+.step-badge .text { flex: 1; font-weight: 600; text-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+
+/* 弹窗 */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.9);
+    z-index: 1000;
+    justify-content: center;
+    align-items: flex-end;
+    backdrop-filter: blur(4px);
+}
+.modal.show { display: flex; }
+.modal-content {
+    background: linear-gradient(180deg, #1a1a2e, #16213e);
+    border-radius: 20px 20px 0 0;
+    padding: 24px;
+    max-height: 85vh;
+    overflow-y: auto;
+    width: 100%;
+    max-width: 430px;
+    border-top: 2px solid #e94560;
+}
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.modal-header h3 { font-size: 17px; color: #ffd740; }
+.modal-close { background: rgba(255,255,255,0.1); border: none; color: #7f8c8d; font-size: 20px; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; }
+.modal-body { color: #b0bec5; font-size: 13px; line-height: 1.8; }
+.modal-body h4 { color: #82d4ff; font-size: 14px; margin: 16px 0 8px; }
+.modal-body h4:first-child { margin-top: 0; }
+.modal-body ol { padding-left: 20px; margin: 8px 0; }
+.modal-body li { margin-bottom: 8px; }
+.modal-body .highlight { color: #ffd740; font-weight: 600; }
+
+/* 底部 */
+.footer { text-align: center; padding: 24px 16px; color: #546e7a; font-size: 11px; }
+
+/* 滚动条 */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<div class="header-new">
+    <div class="header-top">
+        <div class="header-left">
+            <h1>🏀 曹子骞篮球训练</h1>
+            <div class="date" id="currentDate"></div>
+        </div>
+        <div class="header-right">
+            <img src="image/photo.jpg" alt="照片" onerror="this.style.display='none'" style="cursor:pointer;" onclick="alert('照片位置')">
+        </div>
+    </div>
+    <div class="header-bottom">
+        <span class="header-badge active">U9</span>
+        <span class="header-badge">康复期</span>
+        <span class="header-badge" id="dayBadge">周一</span>
+    </div>
+</div>
+
+<div class="nav">
+    <div class="nav-item active" onclick="showPage('p1',this)">🏠 今日</div>
+    <div class="nav-item" onclick="showPage('p2',this)">💪 体能</div>
+    <div class="nav-item" onclick="showPage('p3',this)">🏀 基本功</div>
+    <div class="nav-item" onclick="showPage('p4',this)">👨‍👦 亲子</div>
+    <div class="nav-item" onclick="showPage('p5',this)">🔥 组合</div>
+    <div class="nav-item" onclick="showPage('p6',this)">🎬 抖音</div>
+    <div class="nav-item" onclick="showPage('p7',this)">🔥 拉伸</div>
+</div>
+
+<!-- 第1页：今日训练 -->
+<div class="page active" id="p1">
+    <div id="todayContent"></div>
+</div>
+
+<!-- 第2页：体能库 -->
+<div class="page" id="p2">
+    <div class="card">
+        <div class="card-title"><span class="icon">💪</span>体能动作库（基础+进阶）</div>
+        <p style="font-size:11px;color:#7f8c8d;margin-bottom:10px;">热身和拉伸请到"拉伸"页面查看</p>
+        <input type="text" class="search-box" placeholder="搜索动作..." oninput="filterList('fitness',this.value)">
+        <div id="fitnessList"></div>
+    </div>
+</div>
+
+<!-- 第3页：基本功库 -->
+<div class="page" id="p3">
+    <div class="card">
+        <div class="card-title"><span class="icon">🏀</span>篮球基本功（35个）</div>
+        <input type="text" class="search-box" placeholder="搜索动作..." oninput="filterList('basic',this.value)">
+        <div id="basicList"></div>
+    </div>
+    <div class="card">
+        <div class="card-title"><span class="icon">🔥</span>高阶组合动作（24个）</div>
+        <div id="comboList"></div>
+    </div>
+</div>
+
+<!-- 第4页：亲子配合 -->
+<div class="page" id="p4">
+    <div class="card">
+        <div class="card-title"><span class="icon">👨‍👦</span>亲子配合训练（15组）</div>
+        <p style="font-size:12px;color:#7f8c8d;margin-bottom:12px;">孩子持球进攻，爸爸站那防守/传球配合</p>
+        <div id="parentList"></div>
+    </div>
+</div>
+
+<!-- 第5页：高阶组合 -->
+<div class="page" id="p5">
+    <div class="card">
+        <div class="card-title"><span class="icon">🔥</span>高阶组合动作</div>
+        <p style="font-size:11px;color:#7f8c8d;margin-bottom:10px;">单人训练组合，带抖音拍摄方案</p>
+        <div id="comboList2"></div>
+    </div>
+</div>
+
+<!-- 第6页：抖音脚本 -->
+<div class="page" id="p6">
+    <div class="card">
+        <div class="card-title"><span class="icon">🎬</span>抖音脚本万能库</div>
+        <div id="scriptList"></div>
+    </div>
+</div>
+
+<!-- 第7页：热身拉伸 -->
+<div class="page" id="p7">
+    <div class="card" style="background:linear-gradient(135deg,rgba(76,175,80,0.15),rgba(76,175,80,0.05));border:1px solid rgba(76,175,80,0.3);">
+        <div class="card-title"><span class="icon">🔥</span>热身动作（训练前必做）</div>
+        <p style="font-size:11px;color:#81c784;margin-bottom:12px;">重点激活踝关节和跟腱，预防小腿脚踝疼痛！</p>
+        <div id="warmupList"></div>
+    </div>
+    <div class="card" style="background:linear-gradient(135deg,rgba(0,188,212,0.15),rgba(0,188,212,0.05));border:1px solid rgba(0,188,212,0.3);">
+        <div class="card-title"><span class="icon">🤸</span>拉伸动作（训练后必做）</div>
+        <p style="font-size:11px;color:#4dd0e1;margin-bottom:12px;">重点拉伸小腿后侧、比目鱼肌和跟腱，防止脚后跟疼！</p>
+        <div id="stretchList"></div>
+    </div>
+</div>
+
+<!-- 弹窗 -->
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="modalTitle">动作详情</h3>
+            <button class="modal-close" onclick="closeModal()">×</button>
+        </div>
+        <div class="modal-body" id="modalBody"></div>
+    </div>
+</div>
+
+<div class="footer">每天进步一点点 · 加油曹子骞！</div>
+
+<script>
+// ===== 体能动作库 =====
+var fitness = [
+{id:1,name:"深蹲",level:"基础",sets:"3×12",steps:"双脚与肩同宽|脚尖朝前|屈髋屈膝下蹲|下蹲至大腿与地面平行|核心收紧|双脚发力站起",tips:"膝盖不超过脚尖|背部挺直|慢起慢落",error:"膝盖内扣|起身踮脚",video:"侧面拍展示下蹲角度",links:[]},
+{id:2,name:"单腿站立",level:"基础",sets:"各30秒×3",steps:"单腿站立|支撑腿微弯|核心收紧|骨盆水平|睁眼做→闭眼做",tips:"骨盆水平|受伤腿优先练",error:"骨盆倾斜",video:"正面拍展示稳定",links:[]},
+{id:3,name:"平板支撑",level:"基础",sets:"3×30秒",steps:"俯卧撑姿势|手肘撑地|身体从头到脚一条线|收紧腹部|保持不动",tips:"身体不要塌腰|正常呼吸",error:"塌腰|撅屁股",video:"侧面拍展示身体直线",links:[]},
+{id:4,name:"鸟狗式",level:"进阶",sets:"各8次×2",steps:"四点支撑|抬起右手向前伸|同时抬起左腿向后|保持2-3秒|慢慢放下换对侧",tips:"身体不晃动|慢起慢落",error:"骨盆旋转",video:"俯拍展示稳定",links:[]},
+{id:5,name:"提踵",level:"基础",sets:"3×15",steps:"双脚与肩同宽|扶着墙|脚尖着地|慢慢抬起脚跟|最高点停留1秒|慢慢放下",tips:"慢起慢落|感受小腿发力",error:"速度太快",video:"侧面拍脚部动作",links:[]},
+{id:6,name:"折返跑",level:"基础",sets:"5×10米",steps:"站在起点|快速跑向终点|摸地面后折返|全速跑回起点|走回休息1分钟",tips:"不要全速|折返重心压低",error:"折返急停太猛",video:"侧面拍折返瞬间",links:[]},
+{id:7,name:"跳绳",level:"基础",sets:"3×1分钟",steps:"调整绳子长度|用脚尖跳|手腕转绳|膝盖微弯缓冲|保持节奏",tips:"软地面|穿减震鞋",error:"全脚掌着地",video:"俯拍全身",links:[]},
+{id:8,name:"慢跑",level:"基础",sets:"10-15分钟",steps:"热身走路3分钟|开始慢跑|保持均匀呼吸|累了可以走一段|结束后放松3分钟",tips:"循序渐进|以能说话为准",error:"一开始就跑太快",video:"跟拍跑步",links:[]},
+{id:9,name:"高抬腿",level:"基础",sets:"3×20秒",steps:"原地站立|抬左膝至大腿平行|快速换右腿|交替进行|核心收紧",tips:"大腿抬水平|频率要快",error:"抬腿高度不够",video:"正面拍",links:[]},
+{id:10,name:"小碎步",level:"基础",sets:"3×15秒",steps:"双脚与肩同宽|重心降低|脚尖着地|快速小步移动|保持低重心",tips:"脚尖着地|频率快",error:"全脚掌着地",video:"俯拍",links:[]},
+{id:11,name:"弓步蹲",level:"进阶",sets:"各10×2",steps:"双脚与肩同宽|右腿向前迈|右膝弯曲左膝接近地|前膝不过脚尖|双脚发力站起|换腿",tips:"前膝对准脚尖",error:"前膝超过脚尖",video:"侧面拍",links:[]},
+{id:12,name:"臀桥",level:"基础",sets:"3×15",steps:"仰卧膝盖弯曲|双脚与肩同宽|臀部发力抬起|抬到肩膀-膝盖一条线|最高点收紧|慢慢放下",tips:"臀部发力不是腰",error:"腰过度挺起",video:"侧面拍",links:[]},
+{id:13,name:"死虫式",level:"进阶",sets:"各10×2",steps:"仰卧双手指天|膝盖弯曲抬起|下背贴紧地|伸直右臂同时伸直左腿|回到起始换对侧",tips:"下背始终贴地",error:"下背离开地面",video:"俯拍",links:[]},
+{id:14,name:"侧桥",level:"进阶",sets:"各30秒×2",steps:"侧卧手肘撑地|身体从头到脚一条线|收紧侧腹|保持不动",tips:"身体不下沉",error:"身体下沉",video:"侧面拍",links:[]},
+{id:15,name:"靠墙静蹲",level:"基础",sets:"3×30秒",steps:"背靠墙|向前迈一步|下蹲至大腿平行|膝盖弯曲90度|膝盖对准脚尖|保持不动",tips:"膝盖友好动作",error:"膝盖内扣",video:"侧面拍",links:[]},
+{id:16,name:"蚌式开合",level:"基础",sets:"各15×2",steps:"侧卧膝盖弯曲|双脚并拢|上侧膝盖向上打开|双脚保持贴在一起|打开到最大|慢慢放下",tips:"感受臀部外侧发力",error:"身体后仰",video:"正面拍侧面",links:[]},
+{id:17,name:"拉伸小腿",level:"基础",sets:"2×30秒/边",steps:"面对墙站立|双手撑墙|右脚向后撤|右腿伸直脚跟着地|身体前倾|感受小腿拉伸",tips:"脚尖朝前|后腿伸直",error:"后腿膝盖弯曲",video:"侧面拍",links:["提踵"]},
+{id:18,name:"拉伸大腿前侧",level:"基础",sets:"2×30秒/边",steps:"站立扶墙|弯曲右膝脚后跟靠近臀|手握脚踝|将脚后跟拉向臀|骨盆正前方|换腿",tips:"膝盖垂直向下",error:"膝盖外展",video:"侧面拍",links:["深蹲","弓步蹲"]},
+{id:19,name:"拉伸髋关节",level:"基础",sets:"2×30秒/边",steps:"坐在地上|右腿伸直左腿弯曲脚放右膝外侧|身体前倾|双手向前伸展",tips:"坐骨坐实|前倾不弓背",error:"弓背",video:"侧面拍",links:["深蹲"]},
+{id:20,name:"金鸡独立",level:"基础",sets:"各30秒×2",steps:"单腿站立|另一腿膝盖弯曲抬至髋高|双臂打开|慢慢闭眼|保持30秒|换腿",tips:"睁眼完成后做闭眼版",error:"支撑腿锁死",video:"正面拍",links:["单腿站立"]},
+{id:21,name:"波比跳",level:"进阶",sets:"5×5",steps:"站立|蹲下双手撑地|双脚向后跳成俯卧撑|做一个俯卧撑|双脚跳回|站起来跳起",tips:"高强度|膝盖不舒服可不做俯卧撑",error:"落地太重",video:"侧面拍全程",links:["深蹲跳","平板支撑"]},
+{id:22,name:"登山者",level:"进阶",sets:"3×30秒",steps:"俯卧撑姿势|收紧核心|右膝快速提向胸|快速换左膝|交替快速进行",tips:"臀部不高|频率要快",error:"屁股翘太高",video:"侧面拍",links:["平板支撑"]},
+{id:23,name:"深蹲跳",level:"进阶",sets:"3×8",steps:"站立|下蹲至大腿平行|双脚蹬地跳起|空中展体|轻轻落地缓冲|立即做下一个",tips:"落地要轻|膝盖弯曲缓冲",error:"落地太重",video:"侧面拍慢动作",links:["深蹲","波比跳"]},
+{id:24,name:"单腿臀桥",level:"进阶",sets:"各10×2",steps:"仰卧膝盖弯曲|右腿伸直抬起|左脚发力抬臀部|抬到最高点收紧|慢慢放下|换腿",tips:"核心收紧|身体不要歪",error:"身体歪斜",video:"侧面拍",links:["臀桥","死虫式"]},
+{id:25,name:"保加利亚深蹲",level:"进阶",sets:"各8×2",steps:"站在台阶前|右脚向后放台阶上|左腿下蹲|前腿大腿与地平行|前腿发力站起|换腿",tips:"前膝不过脚尖",error:"前膝内扣",video:"侧面拍",links:["深蹲","弓步蹲"]},
+{id:26,name:"农夫行走",level:"基础",sets:"2×20米",steps:"双手各拿重物|身体挺直|核心收紧|正常走路向前|走到终点返回",tips:"不要弯腰|肩膀放松",error:"弯腰驼背",video:"正面拍走路",links:["深蹲"]},
+{id:27,name:"转体深蹲",level:"进阶",sets:"3×8/边",steps:"双脚与肩同宽|下蹲|起身时向右转体|右手向右打开|回到中心|换左侧",tips:"转体时脚跟着地",error:"只转上半身",video:"俯拍或正面",links:["深蹲"]},
+{id:28,name:"熊爬",level:"基础",sets:"2×10米",steps:"四点支撑|右脚和左手向前爬|左脚和右手向前爬|交替进行|保持背部平直",tips:"核心收紧|背部不塌",error:"屁股翘太高",video:"侧面拍",links:["平板支撑","死虫式"]},
+{id:29,name:"毛毛虫爬",level:"基础",sets:"3×5",steps:"站立|弯腰双手撑地|双手走到俯卧撑姿势|保持双腿伸直|双手不动走回站立",tips:"腿尽量伸直",error:"腿弯曲",video:"侧面拍全程",links:["拉伸小腿"]},
+{id:30,name:"放松走",level:"基础",sets:"5-10分钟",steps:"慢速走路|深呼吸|全身放松|拉伸紧张肌肉|补充水分",tips:"不要赶时间",error:"走太快",video:"自然跟拍",links:[]},
+// ===== 热身动作库（针对小腿、脚踝、跟腱）=====
+{id:101,name:"脚踝绕环",level:"热身",sets:"各20秒",steps:"单腿站立（可扶墙）|另一腿抬起膝盖|脚尖放松|脚踝顺时针转10圈|再逆时针转10圈|换腿",tips:"动作要慢|转完整圈|穿运动鞋做",error:"动作太快|膝盖不固定",video:"侧面拍特写",links:["拉伸小腿"]},
+{id:102,name:"踝关节弹震",level:"热身",sets:"30秒",steps:"双脚与肩同宽|脚尖着地|脚跟抬起|快速小幅度上下弹震|膝盖保持微弯",tips:"幅度要小|频率要快|激活踝关节",error:"幅度太大|膝盖锁死",video:"正面拍脚踝",links:["脚踝绕环"]},
+{id:103,name:"小腿三方向拉伸",level:"热身",sets:"各10次/边",steps:"弓步姿势|后腿伸直|脚尖朝前→感受小腿后侧|脚尖内扣→感受小腿外侧|脚尖外撇→感受小腿内侧",tips:"每个方向都要拉伸到|缓慢进行",error:"后腿弯曲|脚尖方向不变",video:"侧面拍三个方向",links:["拉伸小腿"]},
+{id:104,name:"踮脚走",level:"热身",sets:"2×10米",steps:"脚尖着地|脚跟抬起|慢慢向前走|保持平衡|感受小腿发力",tips:"走稳不要快|锻炼踝关节稳定性",error:"踮脚走太快|脚后跟落地",video:"侧面拍走路",links:["提踵","脚踝绕环"]},
+{id:105,name:"脚趾抓毛巾",level:"热身",sets:"3×1分钟",steps:"坐姿或站姿|地上放毛巾|用脚趾把毛巾抓起来|再把毛巾放开|重复",tips:"增强脚趾灵活性和抓地力",error:"用手帮忙|动作太急",video:"俯拍脚部",links:["拉伸小腿"]},
+{id:106,name:"跟腱激活",level:"热身",sets:"各15次",steps:"站在台阶边缘|脚后跟悬空|快速向上踮脚尖|慢慢放下|感受跟腱拉伸",tips:"扶墙保持平衡|慢起慢落",error:"下放太快|站太边缘",video:"侧面拍",links:["提踵","拉伸小腿"]},
+// ===== 拉伸动作库（针对小腿、脚踝、跟腱）=====
+{id:201,name:"小腿后侧深度拉伸",level:"拉伸",sets:"2×30秒/边",steps:"面对墙站立|双手撑墙|右脚向后撤1米|右腿伸直脚跟着地|慢慢下压身体|感受小腿和跟腱拉伸",tips:"脚尖朝正前方|膝盖不要弯",error:"后腿膝盖弯曲|脚尖内扣",video:"侧面拍",links:["拉伸小腿","跟腱激活"]},
+{id:202,name:"比目鱼肌拉伸",level:"拉伸",sets:"2×30秒/边",steps:"面对墙|右脚向后撤|弯曲右膝|脚跟着地|身体前倾|感受小腿深层肌肉拉伸",tips:"后膝弯曲角度要大|脚跟不离地",error:"后膝伸直|脚跟离地",video:"侧面拍",links:["小腿后侧深度拉伸"]},
+{id:203,name:"跟腱静态拉伸",level:"拉伸",sets:"2×30秒/边",steps:"站立|右脚向前迈半步|右膝弯曲左膝伸直|重心前移|左手扶墙|感受跟腱拉伸",tips:"后腿膝盖伸直|脚尖朝前",error:"后腿弯曲|身体晃动",video:"侧面拍",links:["小腿后侧深度拉伸"]},
+{id:204,name:"脚底筋膜放松",level:"拉伸",sets:"2×1分钟",steps:"坐姿|右脚放在左膝上|右手握住脚趾|轻轻向上向后拉伸|感受脚底和跟腱",tips:"要慢|不要过度用力",error:"用力过猛|动作太快",video:"正面拍",links:["跟腱静态拉伸"]},
+{id:205,name:"坐姿小腿拉伸",level:"拉伸",sets:"2×30秒/边",steps:"坐地上|右腿伸直|弹力带套在脚掌|双手拉弹力带|将脚趾拉向身体|感受小腿拉伸",tips:"腿要伸直|感受小腿后侧",error:"腿弯曲|用力太大",video:"俯拍",links:["拉伸小腿"]},
+{id:206,name:"靠墙足跟下沉",level:"拉伸",sets:"2×20秒/边",steps:"背靠墙|坐在地上|双腿伸直|脚趾向上|用手把脚趾向后拉|感受小腿和跟腱",tips:"腿不要弯曲|慢慢拉伸",error:"腿弯曲|脚踝内翻",video:"侧面拍",links:["跟腱静态拉伸","比目鱼肌拉伸"]}
+,{id:107,name:"绕场慢颠跑",level:"热身",sets:"1圈",steps:"以慢跑速度绕球场跑一圈|保持均匀呼吸|脚步轻盈|不要全速",tips:"控制速度|以能说话为准",error:"跑太快|呼吸急促",video:"跟拍侧面",links:[]}
+,{id:207,name:"拉伸大腿后侧",level:"拉伸",sets:"2×30秒/边",steps:"坐在地上|右腿伸直勾脚尖|身体前倾双手去够脚尖|感受大腿后侧拉伸",tips:"腿要伸直|不要弓背",error:"腿弯曲|弓背",video:"侧面拍",links:[]}
+,{id:208,name:"拉伸大腿内侧",level:"拉伸",sets:"2×30秒/边",steps:"坐地上|双脚底对在一起|手肘压膝盖|感受大腿内侧拉伸",tips:"膝盖向下压|脚尖朝上",error:"膝盖不上抬",video:"俯拍",links:[]}
+,{id:109,name:"关节环绕激活",level:"热身",sets:"各方向10圈",steps:"踝关节：脚尖画圈|膝关节：大腿画圈|髋关节：大腿前后左右摆动|肩关节：手臂前后画大圈|每个关节各做顺时针和逆时针",tips:"慢慢转动|感受关节活动范围",error:"转动太快|幅度太大",video:"正面拍全身",links:[]}
+,{id:110,name:"弓步压腿",level:"热身",sets:"各10次×2",steps:"站直|右脚向前迈一大步|左膝弯曲下蹲至接近地面|双手扶右膝|身体保持挺直|然后换左脚",tips:"前膝不超过脚尖|后膝不碰地|挺胸收腹",error:"前膝内扣|弯腰驼背",video:"侧面拍",links:[]}
+,{id:111,name:"侧弓步拉伸",level:"热身",sets:"各10次×2",steps:"双脚站宽|身体向右侧下蹲|左腿伸直|右膝弯曲|双手在前|感受左侧大腿内侧拉伸|然后换另一边",tips:"脚尖朝前|伸直的腿不弯",error:"脚尖外八|弯腰",video:"正面拍",links:[]}
+,{id:112,name:"提踵落踵控制",level:"热身",sets:"3×15次",steps:"双脚与肩同宽|慢慢踮起脚尖|停顿2秒|慢慢落下脚跟|感受小腿全程控制",tips:"上升2秒停1秒下降2秒|全程控制不要弹",error:"下落太快|没有控制",video:"侧面拍",links:["提踵","跟腱激活"]}
+];
+
+// ===== 视频拍摄指南 =====
+var videoTypes = {
+    teaching: { name: "教学干货向", icon: "📖", color: "#4CAF50", desc: "技术讲解、动作分解、训练方法", shoot: "正面拍全身+局部特写切换|先拍完整动作再拍慢动作分解|每步动作停留3秒让观众看清" },
+    daily: { name: "日常成长向", icon: "📈", color: "#2196F3", desc: "训练打卡、进步记录、对比视频", shoot: "固定角度跟拍|开头拍日期或训练天数|用前后的对比画面做首尾|加计数器特效" },
+    recovery: { name: "康复成长向", icon: "🏥", color: "#FF9800", desc: "康复训练、伤病恢复、关节保养", shoot: "侧面拍动作细节|拍康复前后的状态对比|文字标注疼痛部位|节奏慢背景音乐舒缓" },
+    match: { name: "比赛高光向", icon: "🏆", color: "#E91E63", desc: "比赛集锦、实战技巧、战术分析", shoot: "用手机架高处拍全场|进球瞬间慢动作回放|比分字幕叠加|配热血BGM" },
+    home: { name: "居家训练向", icon: "🏠", color: "#9C27B0", desc: "在家训练、无器材动作、家庭健身", shoot: "室内用窗边自然光|固定机位正面或侧面|拍完整训练流程|简单字幕标注动作名" },
+    challenge: { name: "挑战打卡向", icon: "🔥", color: "#FF5722", desc: "连续挑战、数字突破、个人纪录", shoot: "开头拍目标数字|每个成功动作加计数特效|失败画面也要放真实才有感染力|结尾放最终成绩" },
+    parent: { name: "亲子互动向", icon: "👨‍👦", color: "#00BCD4", desc: "父子/父女配合训练、趣味互动", shoot: "侧面拍两人配合画面|开头拍两人击掌或准备动作|捕捉互动瞬间表情|温馨BGM" },
+    tutorial: { name: "技巧教学向", icon: "💡", color: "#8BC34A", desc: "单个技巧深度讲解、错误纠正", shoot: "先拍错误示范再做正确示范|局部特写手型或脚步|用箭头或圈标注关键点|语速慢吐字清晰" },
+    vlog: { name: "训练Vlog向", icon: "🎥", color: "#607D8B", desc: "训练日常记录、球场氛围、成长故事", shoot: "多角度切换拍|拍准备-训练-结束完整流程|加旁白讲述今天感受|配轻快BGM" }
+};
+
+var shootingTips = {
+    // === 拍摄前准备 ===
+    lighting: "上午10点前或下午4点后拍摄，光线柔和不刺眼。室内靠窗边拍，避免逆光。阴天其实是最佳拍摄天气！",
+    angle: "运球动作→侧面拍或俯拍；投篮动作→侧面拍出手角度；全身动作→正面拍全身；特写→蹲下与腰部齐平",
+    stabilization: "固定镜头：手臂夹紧身体或用三脚架。跟拍：小步跑保持稳定。手机设置：开启防抖+4K 60帧",
+    focus: "拍前点屏幕对焦到人物。运球时对焦到手或球。投篮时对焦到篮筐。人物移动时选追踪对焦",
+
+    // === 拍摄中技巧 ===
+    composition: "人物占画面下半部分，上方留空加字幕。全身动作留1个人头顶空间。特写镜头手/脚占画面2/3",
+    timing: "单个动作拍15-30秒。组合动作拍30-60秒。开场白和结束语各3-5秒。总视频控制在60-90秒",
+    movement: "运球→镜头跟着球走。上篮→先拍起步再快速移到篮下。拉伸→固定机位拍完整过程",
+    expression: "拍前深呼吸放松表情。做完动作看镜头笑一下。累了不拍，状态好再拍",
+
+    // === 拍摄后剪辑 ===
+    editing: "剪映APP：导入→剪掉废镜头→加字幕（白色+黑边）→选热门BGM（声音60%以下）→加片头片尾",
+    music: "运球视频→节奏感强的说唱/HipHop。训练打卡→轻快励志。亲子互动→温馨活泼。康复→舒缓治愈",
+    caption: "开场3秒必须抓眼球！字幕放画面上方1/3位置。关键动作加箭头或文字标注。结尾加关注引导",
+    postTips: "发布时间：放学后5-7点或晚上8-10点。封面选最有张力的一帧。话题标签选5-8个"
+};
+
+// ===== 基本功动作库 =====
+var basic = [
+{id:1,name:"双手体前换手",level:"基础",sets:"2×1分钟",steps:"双脚与肩同宽|双手持球胸前|右手将球推到左手|左手接球后立即推回右手|交替进行节奏由慢到快",tips:"低手换球|手指控球",error:"球弹太高|眼睛看球",video:"俯拍（手机放地上）",links:["胯下8字","体前变向"]},
+{id:2,name:"胯下8字",level:"基础",sets:"2×1分钟",steps:"双脚与肩同宽|弯腰（不是驼背）|右手将球从胯下穿到左边|左手在左边接球|左手将球穿到右边|形成8字",tips:"膝盖要弯|球贴着胯下过",error:"弯腰驼背|球弹太高",video:"侧面拍展示8字",links:["双手体前换手","双胯下"]},
+{id:3,name:"原地高低运球",level:"基础",sets:"2×2分钟",steps:"双脚与肩同宽|高运球：球在腰部|低运球：球在膝盖以下|高→低交替|护球手抬起来挡",tips:"手指控球|护球手保护",error:"手掌拍球",video:"正面拍展示手型",links:["体前变向"]},
+{id:4,name:"体前变向",level:"基础",sets:"2×1分钟",steps:"右手运球前进|接近障碍物|左手在体前接球同时右手离开|球弹地后左手控球|立即变向到右手",tips:"变向要快|屈膝护球",error:"球离身体太远",video:"俯拍或正面拍",links:["胯下运球","背后运球"]},
+{id:5,name:"擦板上篮",level:"基础",sets:"各5×3组",steps:"从罚球线延长线附近起步|右手上篮左脚起跳|身体背对篮筐|球用腕力拨向篮板|瞄篮板方框右上角",tips:"用方框做参照|腕力拨球",error:"直接投而不是擦板",video:"侧面拍投篮轨迹",links:["罚球","抛投"]},
+{id:6,name:"罚球",level:"基础",sets:"3×8个",steps:"站在罚球线|双脚与肩同宽|球在胸前两手持球|瞄篮筐前沿|腿蹬地同时出手|手腕下压",tips:"瞄篮筐前沿|腿发力传到手臂",error:"手臂发力腿不动",video:"正面拍展示姿势",links:["擦板上篮","急停跳投"]},
+{id:7,name:"行进间双胯下",level:"基础",sets:"2×10米",steps:"向前走路/小跑|右腿跨过球|左手在右边接球|左手将球穿过胯下到右边|右手在右边接球|连续交替",tips:"膝盖抬高|球贴着胯下",error:"球弹太高",video:"俯拍跟拍",links:["胯下8字","双胯下"]},
+{id:8,name:"背后运球",level:"基础",sets:"2×1分钟",steps:"背对前进方向|将球拍向身后|从身后换手到另一侧|继续运球前进",tips:"球不要弹太高|手指控球",error:"球弹过头顶",video:"侧面拍或跟拍",links:["胯下运球","背后变向"]},
+{id:9,name:"转身运球",level:"基础",sets:"各5×3",steps:"运球中转身|用转身保护球|转身后继续运球|可以180度或360度",tips:"转身后护球|核心收紧",error:"转身时掉球",video:"侧面拍",links:["胯下转身","背后运球"]},
+{id:10,name:"胯下运球",level:"基础",sets:"2×1分钟",steps:"运球中抬起前腿|将球从胯下穿过|另一只手在另一侧接球|换手后继续运球",tips:"球贴着胯下过|膝盖抬高",error:"球弹太高",video:"侧面拍",links:["体前变向","胯下8字"]},
+{id:11,name:"欧洲步上篮",level:"进阶",sets:"各5×3",steps:"运球到篮下|两大步向篮筐|第一步向左|第二步向右|躲开封盖上篮",tips:"步幅要大|节奏要快",error:"步幅太小",video:"正面或侧面拍",links:["急停跳投","抛投"]},
+{id:12,name:"后撤步投篮",level:"进阶",sets:"各8×2",steps:"运球中后撤一步|拉开投篮空间|起跳投篮|保持follow through",tips:"后撤步要快|投篮要稳",error:"后撤不够快",video:"侧面拍",links:["急停跳投","三威胁姿势"]},
+{id:13,name:"急停跳投",level:"进阶",sets:"各8×2",steps:"运球中快速急停|双脚或单脚停稳|起跳投篮|保持姿势",tips:"停稳再投|核心收紧",error:"停不稳就投",video:"侧面拍",links:["后撤步投篮","行进间投篮"]},
+{id:14,name:"三威胁姿势",level:"基础",sets:"3×30秒",steps:"面向防守者|屈膝降低重心|球在胸前|观察防守|随时可以传/运/投",tips:"随时观察防守",error:"站太直",video:"正面拍",links:["三威胁+试探步","三威胁+胯下"]},
+{id:15,name:"in&out运球",level:"进阶",sets:"2×1分钟",steps:"运球中|手腕向内转|球向左晃|立即向外转|球向右晃|防守以为要变向",tips:"手腕转动|幅度要大",error:"幅度太小",video:"正面或俯拍",links:["背后运球","犹豫步"]},
+{id:16,name:"犹豫步",level:"进阶",sets:"2×1分钟",steps:"运球中|做假突破动作|防守重心动摇|真正突破或变向",tips:"假动作要真",error:"动作太假",video:"正面拍",links:["体前变向","急停跳投"]},
+{id:17,name:"背后变向",level:"进阶",sets:"各8×3",steps:"背后运球|突然改变方向|从身前换手|加速突破",tips:"变向要突然",error:"动作太慢",video:"侧面拍",links:["背后运球","胯下运球"]},
+{id:18,name:"胯下转身",level:"进阶",sets:"各5×3",steps:"胯下运球|转身后继续运球|转身后护球手保护|可以连续转",tips:"转身要稳",error:"转身时掉球",video:"俯拍",links:["转身运球","胯下运球"]},
+{id:19,name:"双胯下",level:"进阶",sets:"2×10米",steps:"行进间|右胯下运球|立即左胯下运球|连续交替不停止",tips:"频率要快|膝盖抬高",error:"节奏断",video:"俯拍跟拍",links:["胯下8字","胯下运球"]},
+{id:20,name:"背后胯下",level:"进阶",sets:"2×10米",steps:"背后运球|胯下运球|背后运球|胯下运球|连续交替",tips:"节奏稳定",error:"节奏乱",video:"俯拍",links:["背后运球","胯下运球"]},
+{id:21,name:"高绕球",level:"进阶",sets:"各5×3",steps:"运球到防守身边|用手臂带球绕过防守头顶|绕过瞬间护球|继续运球突破",tips:"手臂伸直|球护好",error:"球被断",video:"侧面拍高绕瞬间",links:["护球到怀里","抛投"]},
+{id:22,name:"反手上篮",level:"进阶",sets:"各5×3",steps:"从篮筐左侧上篮|用左手或反手把球抛向篮板|球从篮板左侧进筐",tips:"手腕要柔和",error:"力度太大",video:"侧面慢动作拍",links:["擦板上篮","抛投"]},
+{id:23,name:"抛投",level:"进阶",sets:"各8×2",steps:"运球到篮下|防守在前|抛球出手|高弧线越过防守|球进筐",tips:"弧度要高|手腕柔和",error:"力度不够",video:"侧面拍",links:["反手上篮","擦板上篮"]},
+{id:24,name:"护球到怀里",level:"基础",sets:"3×10次",steps:"运球中|单手把球护住|手臂弯曲把球收进身体侧面|身体挡在球和防守之间",tips:"身体挡球|手臂夹紧",error:"球暴露太多",video:"正面拍",links:["高绕球","三威胁姿势"]},
+{id:25,name:"三威胁+试探步",level:"进阶",sets:"各5×3",steps:"三威胁姿势|做试探动作|防守后退|突破或投篮",tips:"试探要真",error:"动作太假",video:"正面拍",links:["三威胁姿势","犹豫步"]},
+{id:26,name:"三威胁+胯下",level:"进阶",sets:"各5×3",steps:"三威胁姿势|胯下运球突破|护球手保护|继续运球",tips:"衔接要顺",error:"动作断",video:"侧面拍",links:["三威胁姿势","胯下运球"]},
+{id:27,name:"三威胁+背后",level:"进阶",sets:"各5×3",steps:"三威胁姿势|背后运球|转身后护球|继续运球",tips:"转身要快",error:"太慢",video:"侧面拍",links:["三威胁姿势","背后运球"]},
+{id:28,name:"三威胁+转身",level:"进阶",sets:"各5×3",steps:"三威胁姿势|转身保护球|转身后继续运球",tips:"转身护球",error:"掉球",video:"侧面拍",links:["三威胁姿势","转身运球"]},
+{id:29,name:"传球姿势",level:"基础",sets:"2×20次",steps:"双脚与肩同宽|双手持球|手腕向后|向前挥臂传球|出手后手指向下",tips:"手腕发力|目标明确",error:"用肩膀发力",video:"正面拍",links:["接球准备"]},
+{id:30,name:"接球准备",level:"基础",sets:"2×20次",steps:"看到传球来|伸手迎球|双手接球|接球后护球",tips:"主动迎球",error:"等球来",video:"正面拍",links:["传球姿势"]},
+{id:31,name:"滑步",level:"基础",sets:"3×20秒",steps:"低重心|横向移动|先动脚后动手|保持防守姿势",tips:"脚快手慢",error:"重心太高",video:"侧面或俯拍",links:["交叉步"]},
+{id:32,name:"交叉步",level:"基础",sets:"各5×3",steps:"向右移动|左脚先向右迈|右脚跟着交叉|身体侧对进攻方向",tips:"脚步要快",error:"脚步乱",video:"俯拍",links:["滑步"]},
+{id:33,name:"防守站位",level:"基础",sets:"3×1分钟",steps:"面向进攻者|屈膝降低重心|手臂张开|脚步移动保持距离",tips:"保持低重心",error:"站太直",video:"正面拍",links:["滑步","交叉步"]},
+{id:34,name:"行进间投篮",level:"进阶",sets:"各8×2",steps:"运球到投篮点|调整步伐|起跳投篮|保持follow through",tips:"步伐要稳",error:"脚步乱",video:"侧面拍",links:["急停跳投","罚球"]},
+{id:35,name:"接球投篮",level:"进阶",sets:"各8×2",steps:"跑到投篮点|伸手要球|接球同时调整|起跳投篮",tips:"接球就投",error:"接球后停顿太久",video:"侧面拍",links:["接球准备","急停跳投"]}
+,{id:36,name:"侧向滑步",level:"基础",sets:"3×20秒/边",steps:"防守姿势站好|右脚向右蹬地|左脚跟着向右滑|保持低重心|脚不要交叉|然后向左滑",tips:"低重心|脚不离地|滑步不要跳",error:"脚交叉|重心高|双脚同时离地",video:"侧面或俯拍",links:["滑步","交叉步"]}
+];
+
+// ===== 亲子配合训练 =====
+var parentTraining = [
+{id:1,name:"运球突破+高绕球+上反篮",diff:"***",sets:"10个",steps:"孩子从远处运球冲向篮下|爸爸站在篮下举手防守|孩子到爸爸身边做高绕球过人|绕过爸爸后上反篮",role:"孩子：持球进攻|爸爸：篮下站好举手防守",tip:"高绕球时手臂伸直过爸爸头顶",douyin:{title:"运球突破高绕球上反篮！爸爸都防不住我！",open:"今天和爸爸练球，运球突破高绕球上反篮，你们觉得帅不帅？",close:"喜欢的话关注我，每天看我进步！"}},
+{id:2,name:"运球突破+护球到怀里+上篮",diff:"***",sets:"10个",steps:"孩子运球冲向爸爸|爸爸举手防守|孩子单手护球到怀里|贴着爸爸身体上篮",role:"孩子：持球进攻|爸爸：举手站那防守",tip:"护球要紧，贴着爸爸过",douyin:{title:"护球突破上篮！贴着爸爸过！",open:"和爸爸对练，护球突破上篮！",close:"关注我，看我每天变强！"}},
+{id:3,name:"运球突破+抛投",diff:"***",sets:"10个",steps:"孩子运球冲向爸爸|爸爸举手防守|孩子高绕球后抛投|高弧线越过爸爸",role:"孩子：持球进攻|爸爸：举手防守",tip:"抛投弧度要够高",douyin:{title:"抛投练习！爸爸都盖不到我！",open:"今天练抛投，爸爸根本盖不到我！",close:"你们也来试试吧！"}},
+{id:4,name:"爸爸传球+孩子接球突破",diff:"**",sets:"10个",steps:"爸爸和孩子距离2-3步|爸爸传球给孩子|孩子接球后加速突破爸爸|上篮或跳投",role:"孩子：接球进攻|爸爸：传球后站那防守",tip:"接球瞬间护球",douyin:{title:"接球突破！爸爸传球太舒服了！",open:"爸爸传球真舒服，接球就是一顿突破！",close:"喜欢这个配合关注我！"}},
+{id:5,name:"爸爸传球+三威胁+跳投",diff:"***",sets:"8个",steps:"爸爸传球给孩子|孩子接球后三威胁|爸爸上前一步防守|孩子侧步炸球后撤跳投",role:"孩子：三威胁后进攻|爸爸：传球后上前一步",tip:"三威胁后观察防守再动",douyin:{title:"三威胁跳投！学会阅读防守！",open:"三威胁姿势，读书防守，今天学的新技能！",close:"关注我，每天学新招！"}},
+{id:6,name:"运球+背后运球+上篮",diff:"***",sets:"8个",steps:"孩子运球冲向爸爸|爸爸举手防守|孩子背后运球过爸爸|到篮下上篮",role:"孩子：持球进攻|爸爸：举手站那防守",tip:"背后运球要快",douyin:{title:"背后运球过爸爸！太帅了！",open:"今天练背后运球，成功过掉爸爸！",close:"你们觉得我进步了吗？"}},
+{id:7,name:"运球+胯下运球+上篮",diff:"***",sets:"8个",steps:"孩子运球冲向爸爸|爸爸举手防守|孩子胯下运球换手|换手后加速上篮",role:"孩子：持球进攻|爸爸：举手防守",tip:"胯下换手要快",douyin:{title:"胯下运球突破！基本功就是要扎实！",open:"胯下运球过爸爸，基本功就是要扎实！",close:"每天打卡，关注我不迷路！"}},
+{id:8,name:"爸爸传球+胯下+上篮",diff:"**",sets:"8个",steps:"爸爸传球给孩子|孩子接球胯下运球|绕过爸爸防守|到篮下上篮",role:"孩子：接球胯下进攻|爸爸：传球后防守",tip:"胯下要贴着胯下过",douyin:{title:"接球胯下突破！流畅配合！",open:"和爸爸的配合越来越默契了！",close:"喜欢的话点个关注！"}},
+{id:9,name:"运球+转身+上篮",diff:"***",sets:"8个",steps:"孩子运球冲向爸爸|爸爸伸手防守|孩子转身护球|转身后加速上篮",role:"孩子：持球进攻|爸爸：伸手防守",tip:"转身用身体护球",douyin:{title:"转身过人大法！用身体护球！",open:"转身过人，用身体护住球！",close:"关注我，每天进步！"}},
+{id:10,name:"爸爸传球+转身跳投",diff:"***",sets:"8个",steps:"爸爸传球给孩子|孩子接球三威胁|爸爸上前|孩子转身跳投",role:"孩子：接球转身投篮|爸爸：传球后上前防守",tip:"转身要快，投篮要稳",douyin:{title:"转身跳投！进攻万花筒！",open:"转身跳投，今天解锁新技能！",close:"喜欢的话关注我！"}},
+{id:11,name:"运球+欧洲步+上篮",diff:"***",sets:"8个",steps:"孩子运球冲向爸爸|爸爸举手防守|孩子欧洲步两大步|躲开封盖上篮",role:"孩子：持球进攻|爸爸：举手防守",tip:"欧洲步步幅要大",douyin:{title:"欧洲步上篮！NBA球星同款！",open:"欧洲步上篮，学球星的动作！",close:"你们觉得像谁？"}},
+{id:12,name:"运球+犹豫步+突破",diff:"***",sets:"8个",steps:"孩子运球面对爸爸|爸爸站好防守|孩子做犹豫步|爸爸后退瞬间加速突破",role:"孩子：持球进攻|爸爸：站那防守",tip:"犹豫步假动作要真",douyin:{title:"犹豫步过人大招！假动作太真了！",open:"犹豫步突破，假动作把爸爸骗到了！",close:"你们也试试这个动作！"}},
+{id:13,name:"爸爸传球+急停跳投",diff:"**",sets:"8个",steps:"爸爸传球给孩子|孩子接球向前跑几步|爸爸追上来|孩子急停跳投",role:"孩子：接球急停投篮|爸爸：传球后追防",tip:"停稳再投",douyin:{title:"急停跳投！脚步教科书！",open:"急停跳投，脚步教科书！",close:"关注我，每天学新招！"}},
+{id:14,name:"运球+背后+胯下+上篮",diff:"****",sets:"6个",steps:"孩子运球冲向爸爸|背后运球换手|胯下运球换手|加速突破上篮",role:"孩子：持球进攻|爸爸：举手防守",tip:"两个动作衔接要快",douyin:{title:"背后胯下组合技！炫技时刻！",open:"背后胯下连续过！今天炫技！",close:"炫技时刻！关注我！"}},
+{id:15,name:"综合过人挑战",diff:"*****",sets:"5个",steps:"孩子运球|高绕球/背后运球/胯下运球|三威胁试探|加速突破|上篮或抛投",role:"孩子：综合进攻|爸爸：举手积极防守",tip:"动作要连贯",douyin:{title:"综合过人挑战！爸爸都懵了！",open:"综合过人挑战！一个动作接一个！",close:"这个挑战你们也来试试！"}}
+];
+
+// ===== 高阶组合（单人练）=====
+var combos = [
+{id:1,name:"球性三连",diff:"**",sets:"3组",steps:"双手体前换手|胯下8字|行进间双胯下",video:"俯拍",script:"今天练球性三连！",douyin:{title:"球性三连！手感越来越好！",open:"今天练球性三连，手感越来越好了！",close:"每天打卡，关注我！"}},
+{id:2,name:"运球变向三连",diff:"**",sets:"3组",steps:"体前变向|胯下运球|背后运球",video:"俯拍或侧面",script:"三大变向运球！",douyin:{title:"三大变向运球！基本功必须要扎实！",open:"三大变向运球，基本功必须要扎实！",close:"你们觉得难不难？"}},
+{id:3,name:"投篮三连",diff:"**",sets:"3组",steps:"擦板上篮|罚球|后撤步投篮",video:"侧面拍",script:"投篮特训！",douyin:{title:"投篮特训！三个点都要练到！",open:"投篮特训，三个点都要练到！",close:"喜欢投篮的，关注我！"}},
+{id:4,name:"胯下+背后+胯下",diff:"***",sets:"4组",steps:"胯下运球换手|背后运球换手|胯下运球换手|连续不停止",video:"俯拍特写",script:"胯下背后连续！",douyin:{title:"胯下背后连续！球感绝了！",open:"胯下背后连续运球，球感绝了！",close:"关注我，每天进步！"}},
+{id:5,name:"背后+胯下+背后",diff:"***",sets:"4组",steps:"背后运球|胯下运球|背后运球|连续不停止",video:"俯拍特写",script:"背后胯下交替！",douyin:{title:"背后胯下交替！节奏感满分！",open:"背后胯下交替，节奏感满分！",close:"你们也试试！"}},
+{id:6,name:"胯下+转身+上篮",diff:"***",sets:"4组",steps:"胯下运球|转身上篮|护球手保护",video:"侧面拍",script:"胯下转身上篮！",douyin:{title:"胯下转身上篮！实战动作！",open:"胯下转身上篮，实战中最好用的动作！",close:"关注我，每天学新招！"}},
+{id:7,name:"背后+胯下+背后+胯下",diff:"****",sets:"3组",steps:"右背后|右胯下|左背后|左胯下|连续不停止",video:"俯拍",script:"连续背后胯下！",douyin:{title:"连续背后胯下！看我左右开弓！",open:"连续背后胯下，左右开弓！",close:"你们觉得难不难？"}},
+{id:8,name:"三威胁+胯下+背后+上篮",diff:"****",sets:"3组",steps:"三威胁|胯下运球|背后运球|护球上篮",video:"侧面拍",script:"三威胁组合技！",douyin:{title:"三威胁组合技！进攻万花筒！",open:"三威胁接胯下接背后，三连招！",close:"关注我，每天解锁新技能！"}},
+{id:9,name:"in&out+背后+上篮",diff:"***",sets:"4组",steps:"in&out运球|背后运球换手|加速到篮下|上篮",video:"侧面拍",script:"in&out背后！",douyin:{title:"in&out接背后运球！晃倒空气！",open:"in&out接背后运球，晃倒空气！",close:"喜欢运球的关注我！"}},
+{id:10,name:"双胯下+欧洲步",diff:"***",sets:"4组",steps:"双胯下运球|做完|欧洲步两大步|上篮",video:"跟拍",script:"双胯下接欧洲步！",douyin:{title:"双胯下接欧洲步！街球动作！",open:"双胯下接欧洲步，街球动作学起来！",close:"你们想学什么动作？"}},
+{id:11,name:"胯下+背后+加速突破",diff:"***",sets:"4组",steps:"胯下运球|背后运球|防守重心动摇|加速突破",video:"跟拍",script:"胯下背后突破！",douyin:{title:"胯下背后加速！防守根本跟不上！",open:"胯下背后加速，防守根本跟不上！",close:"关注我，每天进步！"}},
+{id:12,name:"连续胯下挑战",diff:"***",sets:"2×20个",steps:"行进间连续胯下运球|不停止|尽量多",video:"俯拍特写",script:"连续胯下X个挑战！",douyin:{title:"连续胯下X个挑战！能超过我吗？",open:"今天挑战连续胯下20个！你们觉得我能做到吗？",close:"你们最多能连续几个？"}},
+{id:13,name:"背后运球挑战",diff:"***",sets:"2×20米",steps:"背后运球向前|不停止|尽量快",video:"侧面跟拍",script:"背后运球向前！",douyin:{title:"背后运球向前！全靠手感！",open:"背后运球向前，全靠手感！",close:"喜欢的话关注我！"}},
+{id:14,name:"三威胁+转身+跳投",diff:"***",sets:"各8个",steps:"三威胁姿势|转身|转身后跳投",video:"侧面拍",script:"三威胁转身跳投！",douyin:{title:"三威胁转身跳投！进攻万花筒！",open:"三威胁转身跳投，进攻万花筒！",close:"关注我，每天学新招！"}},
+{id:15,name:"后撤步+跳投",diff:"***",sets:"各8个",steps:"运球|后撤一步|起跳投篮",video:"侧面拍",script:"后撤步跳投！",douyin:{title:"后撤步跳投！教科书级别！",open:"后撤步跳投，教科书级别的动作！",close:"你们的后撤步练得怎么样？"}},
+{id:16,name:"急停跳投",diff:"***",sets:"各8个",steps:"运球中快速急停|双脚停稳|起跳投篮",video:"侧面拍",script:"急停跳投！",douyin:{title:"急停跳投！进攻利器！",open:"急停跳投，进攻利器！",close:"关注我，每天进步！"}},
+{id:17,name:"抛投练习",diff:"***",sets:"各10个",steps:"运球到篮下|抛球出手|高弧线越过想象防守",video:"侧面拍",script:"抛投练习！",douyin:{title:"抛投练习！小个子的必备技能！",open:"抛投练习，小个子的必备技能！",close:"你们也练起来！"}},
+{id:18,name:"高绕球+上篮",diff:"***",sets:"各8个",steps:"运球中做高绕球|想象过人|到篮下上篮",video:"侧面拍",script:"高绕球上篮！",douyin:{title:"高绕球上篮！过人必学！",open:"高绕球上篮，过人必学的动作！",close:"关注我！"}},
+{id:19,name:"护球到怀里+上篮",diff:"**",sets:"各8个",steps:"运球中护球到怀里|身体挡球|贴着想象防守上篮",video:"正面拍",script:"护球上篮！",douyin:{title:"护球到怀里！防守的根本断不到！",open:"护球到怀里，防守的根本断不到！",close:"你们学会了吗？"}},
+{id:20,name:"胯下+转身+胯下+上篮",diff:"****",sets:"5个",steps:"胯下运球|转身180度|胯下再换手|转回上篮",video:"俯拍",script:"胯下转身胯下上篮！",douyin:{title:"胯下转身胯下上篮！神操作！",open:"胯下转身胯下上篮，神操作！",close:"关注我，每天学新招！"}},
+{id:21,name:"综合运球挑战",diff:"****",sets:"5组",steps:"胯下|背后|胯下|背后|变向|突破",video:"跟拍全程",script:"综合运球挑战！",douyin:{title:"综合运球挑战！全套路！",open:"综合运球挑战，全套路都来一遍！",close:"你们最擅长哪个？"}},
+{id:22,name:"投篮连续进",diff:"***",sets:"目标进10个",steps:"擦板上篮|罚球|后撤步|急停跳投|轮流投",video:"侧面拍",script:"投篮连续进X个！",douyin:{title:"投篮连续进10个！今天手感不错！",open:"投篮连续进10个！今天手感不错！",close:"你们最多连续进几个？"}},
+{id:23,name:"左手上篮",diff:"***",sets:"各8个",steps:"左手运球到篮下|左手上篮（不用右手）",video:"侧面拍",script:"左手挑战！",douyin:{title:"左手挑战！弱势手也要练！",open:"左手挑战，弱势手也要练！",close:"你们左手练得怎么样？"}},
+{id:24,name:"全场运球上篮",diff:"***",sets:"5趟",steps:"从底线运球到另一侧篮下|上篮|运球回来|连续",video:"跟拍",script:"全场运球上篮！",douyin:{title:"全场运球上篮！体能训练！",open:"全场运球上篮，体能和技术一起练！",close:"关注我！"}}
+];
+
+// ===== 抖音脚本 =====
+var opens = [
+{type:"挑战型",text:"今天挑战XXX，你们觉得我能做到吗？",example:"今天挑战连续胯下运球20个，你们觉得我能做到吗？"},
+{type:"挑战型",text:"XXX挑战，看我今天能不能破纪录！",example:"罚球连续进10个挑战，看我今天能不能破纪录！"},
+{type:"教学型",text:"教练教了我XXX技巧，今天分享给你们！",example:"教练教了我一个欧洲步技巧，今天分享给你们！"},
+{type:"教学型",text:"XXX动作要这样做才对！",example:"胯下运球要这样做才对！"},
+{type:"成果型",text:"练了X个月，终于学会XXX了！",example:"练了3个月，终于学会后撤步跳投了！"},
+{type:"励志型",text:"膝盖受伤X个月了，今天终于可以XXX了！",example:"膝盖受伤6个月了，今天终于可以深蹲跳了！"},
+{type:"打卡型",text:"大家好我是曹子骞，训练第X天打卡！",example:"大家好我是曹子骞，训练第21天打卡！"},
+{type:"日常型",text:"U9篮球少年的日常，今天练XXX",example:"U9篮球少年的日常，今天练胯下运球"},
+{type:"亲子型",text:"爸爸陪我练球，今天练XXX！",example:"爸爸陪我练球，今天练亲子配合！"},
+{type:"亲子型",text:"父子篮球时间，今天挑战XXX！",example:"父子篮球时间，今天挑战运球突破上篮！"},
+{type:"进度型",text:"康复训练第X天，目标XXX，加油！",example:"康复训练第45天，目标单腿站60秒！"}
+];
+
+var closes = [
+{type:"互动型",text:"你们觉得我进步了吗？评论告诉我！"},
+{type:"互动型",text:"你们练到第几天了？评论区打卡！"},
+{type:"关注型",text:"喜欢的话关注我，每天看我进步！"},
+{type:"预告型",text:"明天练XXX，想看的关注我！"},
+{type:"鼓励型",text:"每天进步一点点，我们一起加油！"},
+{type:"请教型",text:"你们还想学什么？评论区告诉我！"},
+{type:"挑战型",text:"这个挑战你们也来试试吧！"},
+{type:"简单型",text:"今天就练到这里，拜拜！"}
+];
+
+var tags = ["#篮球少年","#U9","#篮球训练","#每日打卡","#成长记录","#励志","#篮球干货","#运球教学","#投篮技巧","#青少年篮球","#亲子篮球","#父子篮球","#变强日记","#胯下运球","#背后运球","#欧洲步","#基本功","#过人技巧","#U9篮球"];
+
+// ===== 周计划 =====
+var week = [
+{day:"周日",emoji:"🏀",type:"自己训练",canShoot:true,content:"🏃 热身（脚踝绕环+踮脚走）+ 💪 体能（深蹲+提踵+平板支撑）+ 🏀 基本功（换手+胯下8字）+ 🔥 组合（胯下+背后+胯下）+ 🤸 拉伸（小腿+跟腱）"},
+{day:"周一",emoji:"🏀",type:"自己训练",canShoot:true,content:"🏃 热身（踝关节弹震+跟腱激活）+ 💪 体能（平板支撑+折返跑）+ 🏀 基本功（投篮练习）+ 🔥 组合（后撤步+跳投）+ 🤸 拉伸（小腿后侧+比目鱼肌）"},
+{day:"周二",emoji:"🏀",type:"亲子配合",canShoot:true,content:"🏃 热身（脚踝绕环+小腿三方向）+ 🏀 基本功（运球热身）+ 👨‍👦 亲子配合（高绕球上反篮+传球突破）+ 🤸 拉伸（跟腱+脚底筋膜）"},
+{day:"周三",emoji:"🏫",type:"校队训练",canShoot:false,content:"🏃 热身（跟腱激活）+ 🏫 跟随校队计划 + 🤸 拉伸（自训小腿+脚踝）"},
+{day:"周四",emoji:"🏫",type:"校队训练",canShoot:false,content:"🏃 热身（踮脚走+踝关节弹震）+ 🏫 跟随校队计划 + 🤸 拉伸（自训小腿后侧）"},
+{day:"周五",emoji:"🏀",type:"机构训练",canShoot:true,content:"🏃 热身（脚踝绕环）+ 🏀 跟随机构教练技巧强化 + 🤸 拉伸（问教练小腿拉伸）"},
+{day:"周六",emoji:"🏀",type:"机构训练/比赛",canShoot:true,content:"🏃 热身前（踝关节激活）+ 🏀 机构训练/比赛 + 🤸 赛后重点拉伸（小腿+跟腱+脚底）"}
+];
+
+// ===== 功能函数 =====
+function showPage(id,el){
+    document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
+    document.querySelectorAll('.nav-item').forEach(function(n){n.classList.remove('active');});
+    document.getElementById(id).classList.add('active');
+    if(el)el.classList.add('active');
+    window.scrollTo(0,0);
+}
+
+function closeModal(){
+    document.getElementById('modal').classList.remove('show');
+}
+
+document.getElementById('modal').addEventListener('click',function(e){
+    if(e.target===this)closeModal();
+});
+
+function renderFitnessList(filter){
+    var container=document.getElementById('fitnessList');
+    var html='<div class="action-grid">';
+    var list=filter?fitness.filter(function(a){return a.name.indexOf(filter)>-1}):fitness.filter(function(a){return a.level!=='热身'&&a.level!=='拉伸';});
+    list.forEach(function(a){
+        var lc=a.level==='基础'?'tag-green':a.level==='进阶'?'tag-blue':'tag-purple';
+        var linksHtml='';
+        if(a.links && a.links.length>0){
+            linksHtml='<div class="recommend-link" onclick="showFitness('+a.id+')"><span class="name">'+a.name+'</span><span class="arrow">→</span></div>';
+        }
+        html+='<div class="action-item" onclick="showFitness('+a.id+')"><h4>'+a.name+'</h4><p>'+a.sets+'</p><span class="tag '+lc+'">'+a.level+'</span>'+linksHtml+'</div>';
+    });
+    html+='</div>';
+    container.innerHTML=html;
+}
+
+function renderBasicList(filter){
+    var container=document.getElementById('basicList');
+    var html='<div class="action-grid">';
+    var list=filter?basic.filter(function(a){return a.name.indexOf(filter)>-1}):basic;
+    list.forEach(function(a){
+        var lc=a.level==='基础'?'tag-green':a.level==='进阶'?'tag-blue':'tag-purple';
+        var linksHtml='';
+        if(a.links && a.links.length>0){
+            linksHtml='<div class="recommend-link" onclick="showBasic('+a.id+')"><span class="name">'+a.name+'</span><span class="arrow">→</span></div>';
+        }
+        html+='<div class="action-item" onclick="showBasic('+a.id+')"><h4>'+a.name+'</h4><p>'+a.sets+'</p><span class="tag '+lc+'">'+a.level+'</span>'+linksHtml+'</div>';
+    });
+    html+='</div>';
+    container.innerHTML=html;
+}
+
+function renderParentList(){
+    var container=document.getElementById('parentList');
+    var html='';
+    parentTraining.forEach(function(p){
+        var steps=p.steps.split('|').map(function(s){return '<li>'+s+'</li>';}).join('');
+        var douyinHtml='';
+        if(p.douyin){
+            douyinHtml='<div class="douyin-card"><h4>🎬 抖音方案</h4><div class="title-suggest">📌 '+p.douyin.title+'</div><div class="script-text">开场："'+p.douyin.open+'"</div><div class="script-text">结尾："'+p.douyin.close+'"</div></div>';
+        }
+        html+='<div class="combo-card" onclick="showParent('+p.id+')"><h4>'+p.name+' <span class="tag tag-red">'+p.diff+'</span> <span class="tag tag-orange">'+p.sets+'</span></h4><ul class="steps">'+steps+'</ul><div class="tag-area"><div class="role">👨‍👦 '+p.role+'</div><div class="tip">💡 '+p.tip+'</div></div>'+douyinHtml+'</div>';
+    });
+    container.innerHTML=html;
+}
+
+function renderComboList(){
+    var container=document.getElementById('comboList');
+    var html='';
+    combos.forEach(function(c){
+        var steps=c.steps.split('|').map(function(s){return '<li>'+s+'</li>';}).join('');
+        var douyinHtml='';
+        if(c.douyin){
+            douyinHtml='<div class="douyin-card"><h4>🎬 抖音方案</h4><div class="title-suggest">📌 '+c.douyin.title+'</div><div class="script-text">开场："'+c.douyin.open+'"</div><div class="script-text">结尾："'+c.douyin.close+'"</div></div>';
+        }
+        html+='<div class="combo-card" onclick="showCombo('+c.id+')"><h4>'+c.name+' <span class="tag tag-red">'+c.diff+'</span> <span class="tag tag-orange">'+c.sets+'</span></h4><ul class="steps">'+steps+'</ul><div style="font-size:10px;color:#82d4ff;margin-top:6px;">📹 '+c.video+'</div>'+douyinHtml+'</div>';
+    });
+    container.innerHTML=html;
+    // 第5页也渲染
+    var container2=document.getElementById('comboList2');
+    if(container2){
+        container2.innerHTML=html;
+    }
+}
+
+function renderScriptList(){
+    var container=document.getElementById('scriptList');
+    var html='';
+
+    // === 拍摄类型分类指南（新增）===
+    html+='<div style="margin-bottom:16px;">';
+    html+='<h3 style="color:#ff6b6b;font-size:14px;margin-bottom:12px;">📋 拍摄类型分类指南</h3>';
+    html+='<p style="font-size:11px;color:#999;margin-bottom:10px;">根据拍摄内容选择对应类型，每种类型有不同的拍摄方案</p>';
+    Object.keys(videoTypes).forEach(function(key){
+        var v=videoTypes[key];
+        html+='<div class="douyin-card" style="border-left:3px solid '+v.color+';">';
+        html+='<h4 style="color:'+v.color+';">'+v.icon+' '+v.name+'</h4>';
+        html+='<div class="title-suggest" style="background:'+v.color+'22;">'+v.desc+'</div>';
+        if(v.shoot){
+            var tips=v.shoot.split('|');
+            var tipsHtml='';
+            tips.forEach(function(t){tipsHtml+='<li style="margin:3px 0;font-size:11px;color:#bbb;">📹 '+t.trim()+'</li>';});
+            html+='<div style="margin-top:6px;"><ul style="padding-left:16px;margin:0;">'+tipsHtml+'</ul></div>';
+        }
+        html+='</div>';
+    });
+    html+='</div>';
+
+    // === 拍摄技巧详细指南（新增）===
+    html+='<div style="margin-bottom:16px;">';
+    html+='<h3 style="color:#4dd0e1;font-size:14px;margin-bottom:12px;">🎬 拍摄技巧大全</h3>';
+    html+='<p style="font-size:11px;color:#999;margin-bottom:10px;">从准备到剪辑的全流程技巧</p>';
+
+    var tipCategories = {
+        '准备阶段': ['lighting','angle','stabilization','focus'],
+        '拍摄阶段': ['composition','timing','movement','expression'],
+        '剪辑发布': ['editing','music','caption','postTips']
+    };
+    var catIcons = {'准备阶段':'🎯','拍摄阶段':'📸','剪辑发布':'✂️'};
+    var catColors = {'准备阶段':'#4CAF50','拍摄阶段':'#2196F3','剪辑发布':'#FF9800'};
+
+    Object.keys(tipCategories).forEach(function(cat){
+        html+='<div class="douyin-card" style="border-left:3px solid '+catColors[cat]+';">';
+        html+='<h4 style="color:'+catColors[cat]+';">'+catIcons[cat]+' '+cat+'</h4>';
+        tipCategories[cat].forEach(function(key){
+            if(shootingTips[key]){
+                html+='<div class="video-tip" style="margin-top:6px;"><strong style="color:#ddd;">'+key+'：</strong><span style="font-size:11px;color:#bbb;">'+shootingTips[key]+'</span></div>';
+            }
+        });
+        html+='</div>';
+    });
+    html+='</div>';
+
+    // === 原有内容：开场白 ===
+    html+='<div style="margin-bottom:16px;"><h3 style="color:#ffd740;font-size:14px;margin-bottom:12px;">🔥 开场白（选1句对着镜头说）</h3>';
+    opens.forEach(function(s,i){
+        html+='<div class="douyin-card"><h4>'+s.type+' '+(i+1)+'</h4><div class="title-suggest">"'+s.text.replace('XXX','<span style="color:#ff6b6b">[动作名]</span>')+'"</div>';
+        if(s.example)html+='<div class="script-text" style="color:#81c784;">例如：'+s.example+'</div>';
+        html+='</div>';
+    });
+
+    // === 原有内容：结束语 ===
+    html+='</div><div style="margin-top:14px;"><h3 style="color:#ffd740;font-size:14px;margin-bottom:12px;">👋 结束语（选1句对着镜头说）</h3>';
+    closes.forEach(function(s,i){
+        html+='<div class="douyin-card"><h4>'+s.type+' '+(i+1)+'</h4><div class="title-suggest" style="background:rgba(255,171,64,0.15);">"'+s.text+'"</div></div>';
+    });
+
+    // === 原有内容：话题标签 ===
+    html+='</div><div style="margin-top:14px;"><h3 style="color:#ffd740;font-size:14px;margin-bottom:12px;">🏷️ 话题标签（每次选5-8个）</h3><div style="display:flex;flex-wrap:wrap;gap:6px;">';
+    tags.forEach(function(t){html+='<span class="tag tag-yellow">'+t+'</span>';});
+    html+='</div></div>';
+    container.innerHTML=html;
+}
+
+function renderWeek(){
+    var container=document.getElementById('weekList');
+    if(!container)return;
+    var days=['周日','周一','周二','周三','周四','周五','周六'];
+    var today=new Date().getDay();
+    var html='';
+    week.forEach(function(w,i){
+        var isToday=i===today;
+        var badge=w.canShoot?'<span class="badge badge-yes">可拍</span>':'<span class="badge badge-no">不拍</span>';
+        html+='<div class="week-item'+(isToday?' today':'')+'"><h4>'+w.emoji+' '+w.day+' '+badge+'</h4><p>'+w.type+'：'+w.content+'</p></div>';
+    });
+    container.innerHTML=html;
+}
+
+function renderToday(){
+    // 设置日期
+    var now=new Date();
+    var dateStr=now.getFullYear()+'年'+(now.getMonth()+1)+'月'+now.getDate()+'日';
+    var dateEl=document.getElementById('currentDate');
+    if(dateEl)dateEl.textContent=dateStr;
+    
+    var days=['周日','周一','周二','周三','周四','周五','周六'];
+    var today=new Date().getDay();
+    var dayName=days[today];
+    var todayData=week[today];
+    var dayBadge=document.getElementById('dayBadge');
+    if(dayBadge)dayBadge.textContent='今天 '+dayName;
+    
+    var container=document.getElementById('todayContent');
+    if(!container)return;
+    var html='<div class="today-hero"><h2>'+todayData.emoji+' '+dayName+'训练</h2><div class="type">'+(todayData.canShoot?'🎬 可拍抖音':'🎯 专注训练')+' · '+todayData.type+'</div><p>'+todayData.content+'</p></div>';
+    
+    // 今日热身 - 针对小腿脚踝
+    var warmupList = fitness.filter(function(f){return f.level==='热身';}).slice(0,3);
+    html+='<div class="today-section" style="border-left-color:#4caf50;background:rgba(76,175,80,0.1);"><h3>🔥 训练前热身（必做！防止小腿脚踝疼）</h3><p>';
+    warmupList.forEach(function(f){
+        html+='<span class="tag tag-green" style="cursor:pointer;" onclick="showFitness('+f.id+')">'+f.name+' '+f.sets+'</span>';
+    });
+    html+='</p><p style="font-size:10px;color:#81c784;margin-top:6px;">💡 每次训练前都要做！特别是踝关节和跟腱激活</p></div>';
+    
+    // 今日体能 - 排除热身和拉伸
+    var todayFitness=fitness.filter(function(f){return f.level==='基础'||f.level==='进阶';}).slice(0,4);
+    html+='<div class="today-section"><h3>💪 今日体能</h3><p>';
+    todayFitness.forEach(function(f,i){
+        html+='<span class="tag">'+f.name+' '+f.sets+'</span>';
+    });
+    html+='</p></div>';
+    
+    // 今日基本功
+    var todayBasic=basic.slice(0,4);
+    html+='<div class="today-section"><h3>🏀 今日基本功</h3><p>';
+    todayBasic.forEach(function(b,i){
+        html+='<span class="tag">'+b.name+' '+b.sets+'</span>';
+    });
+    html+='</p></div>';
+    
+    if(todayData.canShoot){
+        // 今日亲子配合 - 修复变量名 bug
+        var parentItem=parentTraining[today%parentTraining.length];
+        if(parentItem){
+            var parentSteps=parentItem.steps.split('|').map(function(s,i){return '<div class="step-badge"><span class="num">'+(i+1)+'</span><span class="text">'+s+'</span></div>';}).join('');
+            var douyinHtml='';
+            if(parentItem.douyin){
+                douyinHtml='<div class="douyin-card" style="margin-top:10px;"><h4>🎬 今日抖音方案</h4><div class="title-suggest">📌 '+parentItem.douyin.title+'</div><div class="script-text">开场："'+parentItem.douyin.open+'"</div><div class="script-text">结尾："'+parentItem.douyin.close+'"</div></div>';
+            }
+            html+='<div class="today-section" style="border-left-color:#e94560;"><h3>👨‍👦 今日亲子配合</h3><p style="font-size:11px;color:#ffd740;font-weight:600;margin-bottom:6px;">'+parentItem.name+' · '+parentItem.sets+'</p>'+parentSteps+douyinHtml+'</div>';
+        }
+        
+        // 今日单人组合
+        var comboItem=combos[today%combos.length];
+        if(comboItem){
+            var comboSteps=comboItem.steps.split('|').map(function(s,i){return '<div class="step-badge" style="background:linear-gradient(135deg,#ff9800,#ffb74d);"><span class="num">'+(i+1)+'</span><span class="text">'+s+'</span></div>';}).join('');
+            var douyinSoloHtml='';
+            if(comboItem.douyin){
+                douyinSoloHtml='<div class="douyin-card" style="margin-top:10px;"><h4>🎬 抖音方案</h4><div class="title-suggest">📌 '+comboItem.douyin.title+'</div><div class="script-text">开场："'+comboItem.douyin.open+'"</div><div class="script-text">结尾："'+comboItem.douyin.close+'"</div></div>';
+            }
+            html+='<div class="today-section" style="border-left-color:#ff9800;"><h3>🔥 今日单人组合</h3><p style="font-size:11px;color:#ffab40;font-weight:600;margin-bottom:6px;">'+comboItem.name+' · '+comboItem.sets+'</p>'+comboSteps+douyinSoloHtml+'</div>';
+        }
+        
+        // 今日标签
+        html+='<div class="today-section" style="border-left-color:#9c27b0;"><h3>🏷️ 今日话题</h3><p>';
+        var tagPool=["#篮球少年","#U9","#篮球训练","#每日打卡","#成长记录","#亲子篮球","#父子篮球","#基本功"];
+        tagPool.slice(0,6).forEach(function(t){html+='<span class="tag tag-yellow">'+t+'</span>';});
+        html+='</p></div>';
+        
+        // 今日拉伸 - 针对小腿脚踝跟腱
+        var stretchList = fitness.filter(function(f){return f.level==='拉伸';}).slice(0,3);
+        html+='<div class="today-section" style="border-left-color:#00bcd4;background:rgba(0,188,212,0.08);margin-top:16px;"><h3>🤸 训练后拉伸（必做！防止小腿脚踝疼）</h3><p>';
+        stretchList.forEach(function(f){
+            html+='<span class="tag" style="background:rgba(0,188,212,0.25);color:#4dd0e1;cursor:pointer;" onclick="showFitness('+f.id+')">'+f.name+' '+f.sets+'</span>';
+        });
+        html+='</p><p style="font-size:10px;color:#4dd0e1;margin-top:6px;">💡 训练结束后马上拉伸！小腿和跟腱是重点！</p></div>';
+    }
+    
+    container.innerHTML=html;
+}
+
+function showFitness(id){
+    var a=fitness.find(function(x){return x.id===id});
+    if(!a)return;
+    var lc=a.level==='基础'?'tag-green':a.level==='进阶'?'tag-blue':a.level==='热身'?'tag-green':a.level==='拉伸'?'tag-blue':'tag-purple';
+    var levelIcon = a.level==='热身'?'🔥':a.level==='拉伸'?'🤸':'💪';
+    document.getElementById('modalTitle').innerHTML=levelIcon+' '+a.name+' <span class="tag '+lc+'">'+a.level+'</span>';
+    var steps=a.steps.split('|').map(function(s,i){return '<li><span style="color:#ffd740;font-weight:600;">'+(i+1)+'、</span> '+s+'</li>';}).join('');
+    var tips=a.tips.split('|').map(function(s){return '<li>'+s+'</li>';}).join('');
+    var errors=a.error.split('|').map(function(s){return '<li>'+s+'</li>';}).join('');
+    var linksHtml='';
+    if(a.links && a.links.length>0){
+        linksHtml='<h4>🔗 推荐配合训练</h4><div style="display:flex;flex-wrap:wrap;gap:6px;">';
+        a.links.forEach(function(l){
+            var linkedBasic=basic.find(function(b){return b.name===l;});
+            if(linkedBasic)linksHtml+='<div class="recommend-link" onclick="showBasic('+linkedBasic.id+')"><span class="name">'+l+'</span><span class="arrow">→</span></div>';
+        });
+        linksHtml+='</div>';
+    }
+    var warningHtml='';
+    if(a.level==='热身'){
+        warningHtml='<div style="background:rgba(76,175,80,0.15);padding:12px;border-radius:10px;margin-top:12px;"><p style="color:#81c784;font-size:12px;">💡 训练前必做！激活踝关节和跟腱，预防小腿疼痛！</p></div>';
+    } else if(a.level==='拉伸'){
+        warningHtml='<div style="background:rgba(0,188,212,0.15);padding:12px;border-radius:10px;margin-top:12px;"><p style="color:#4dd0e1;font-size:12px;">💡 训练后必做！拉伸小腿和跟腱，防止脚后跟疼！</p></div>';
+    }
+    document.getElementById('modalBody').innerHTML=
+        '<h4>训练量</h4><p class="highlight" style="font-size:14px;">'+a.sets+'</p>'+
+        '<h4>详细步骤</h4><ul style="list-style:none;padding:0;">'+steps+'</ul>'+
+        '<h4>要点提示</h4><ol>'+tips+'</ol>'+
+        '<h4>常见错误</h4><ol>'+errors+'</ol>'+
+        '<h4>📹 抖音怎么拍</h4><p>'+a.video+'</p>'+
+        linksHtml+warningHtml;
+    document.getElementById('modal').classList.add('show');
+}
+
+function showBasic(id){
+    var a=basic.find(function(x){return x.id===id});
+    if(!a)return;
+    var lc=a.level==='基础'?'tag-green':a.level==='进阶'?'tag-blue':'tag-purple';
+    document.getElementById('modalTitle').innerHTML=a.name+' <span class="tag '+lc+'">'+a.level+'</span>';
+    var steps=a.steps.split('|').map(function(s,i){return '<li><span style="color:#ffd740;font-weight:600;">'+(i+1)+'、</span> '+s+'</li>';}).join('');
+    var tips=a.tips.split('|').map(function(s){return '<li>'+s+'</li>';}).join('');
+    var errors=a.error.split('|').map(function(s){return '<li>'+s+'</li>';}).join('');
+    var linksHtml='';
+    if(a.links && a.links.length>0){
+        linksHtml='<h4>🔗 推荐配合训练</h4><p style="font-size:11px;color:#7f8c8d;margin-bottom:8px;">和这些动作一起练效果更好：</p><div style="display:flex;flex-wrap:wrap;gap:6px;">';
+        a.links.forEach(function(l){
+            var linkedBasic=basic.find(function(b){return b.name===l;});
+            if(linkedBasic)linksHtml+='<div class="recommend-link" onclick="showBasic('+linkedBasic.id+')"><span class="name">'+l+'</span><span class="arrow">→</span></div>';
+        });
+        linksHtml+='</div>';
+    }
+    document.getElementById('modalBody').innerHTML=
+        '<h4>训练量</h4><p class="highlight" style="font-size:14px;">'+a.sets+'</p>'+
+        '<h4>详细步骤</h4><ul style="list-style:none;padding:0;">'+steps+'</ul>'+
+        '<h4>要点提示</h4><ol>'+tips+'</ol>'+
+        '<h4>常见错误</h4><ol>'+errors+'</ol>'+
+        '<h4>📹 抖音怎么拍</h4><p>'+a.video+'</p>'+
+        linksHtml;
+    document.getElementById('modal').classList.add('show');
+}
+
+function showParent(id){
+    var p=parentTraining.find(function(x){return x.id===id});
+    if(!p)return;
+    document.getElementById('modalTitle').innerHTML='👨‍👦 '+p.name+' <span class="tag tag-red">亲子</span>';
+    var steps=p.steps.split('|').map(function(s,i){return '<li><span style="color:#ffd740;font-weight:600;">'+(i+1)+'、</span> '+s+'</li>';}).join('');
+    var tips=p.tip.split('|').map(function(s){return '<li>'+s+'</li>';}).join('');
+    var douyinHtml='';
+    if(p.douyin){
+        douyinHtml='<h4 style="color:#ff6b6b;">🎬 抖音拍摄方案</h4>'+
+        '<div style="background:rgba(255,255,255,0.05);padding:12px;border-radius:10px;margin:8px 0;">'+
+        '<p style="color:#82d4ff;margin-bottom:6px;">🎙️ 开场白（对着镜头说）：</p>'+
+        '<p style="color:#ffd740;font-style:italic;">"'+p.douyin.open+'"</p></div>'+
+        '<div style="background:rgba(255,255,255,0.05);padding:12px;border-radius:10px;margin:8px 0;">'+
+        '<p style="color:#82d4ff;margin-bottom:6px;">🎙️ 结束语（对着镜头说）：</p>'+
+        '<p style="color:#ffab40;font-style:italic;">"'+p.douyin.close+'"</p></div>'+
+        '<h4>📹 拍摄要点</h4>'+
+        '<ul style="list-style:none;padding:0;"><li>每个步骤开始前，暂停2秒让观众看清动作</li><li>重要动作可以慢动作回放</li><li>配合口述动作名称</li><li>最后可以加个庆祝动作</li></ul>';
+    }
+    document.getElementById('modalBody').innerHTML=
+        '<h4>训练量</h4><p class="highlight" style="font-size:14px;">'+p.sets+' · 难度 '+p.diff+'</p>'+
+        '<h4>详细步骤</h4><ul style="list-style:none;padding:0;">'+steps+'</ul>'+
+        '<h4>角色分工</h4><p>👨‍👦 '+p.role+'</p>'+
+        '<h4>💡 要点提示</h4><ul style="list-style:none;padding:0;">'+tips+'</ul>'+
+        douyinHtml+
+        '<h4>🏷️ 推荐话题</h4><div style="display:flex;flex-wrap:wrap;gap:4px;"><span class="tag tag-yellow">#亲子篮球</span><span class="tag tag-yellow">#父子篮球</span><span class="tag tag-yellow">#U9</span><span class="tag tag-yellow">#篮球训练</span><span class="tag tag-yellow">#成长记录</span></div>';
+    document.getElementById('modal').classList.add('show');
+}
+
+function showCombo(id){
+    var c=combos.find(function(x){return x.id===id});
+    if(!c)return;
+    document.getElementById('modalTitle').innerHTML='🔥 '+c.name+' <span class="tag tag-red">组合</span>';
+    var steps=c.steps.split('|').map(function(s,i){return '<li><span style="color:#ffd740;font-weight:600;">'+(i+1)+'、</span> '+s+'</li>';}).join('');
+    var douyinHtml='';
+    if(c.douyin){
+        douyinHtml='<h4 style="color:#ff6b6b;">🎬 抖音拍摄方案</h4>'+
+        '<div style="background:rgba(255,255,255,0.05);padding:12px;border-radius:10px;margin:8px 0;">'+
+        '<p style="color:#82d4ff;margin-bottom:6px;">🎙️ 开场白：</p>'+
+        '<p style="color:#ffd740;font-style:italic;">"'+c.douyin.open+'"</p></div>'+
+        '<div style="background:rgba(255,255,255,0.05);padding:12px;border-radius:10px;margin:8px 0;">'+
+        '<p style="color:#82d4ff;margin-bottom:6px;">🎙️ 结束语：</p>'+
+        '<p style="color:#ffab40;font-style:italic;">"'+c.douyin.close+'"</p></div>'+
+        '<h4>📹 拍摄建议</h4><p>'+c.video+'</p>'+
+        '<ul style="list-style:none;padding:0;"><li>俯拍或侧面拍最佳</li><li>重要动作慢放展示</li><li>口述动作名称</li></ul>';
+    }
+    document.getElementById('modalBody').innerHTML=
+        '<h4>训练量</h4><p class="highlight" style="font-size:14px;">'+c.sets+' · 难度 '+c.diff+'</p>'+
+        '<h4>详细步骤</h4><ul style="list-style:none;padding:0;">'+steps+'</ul>'+
+        douyinHtml+
+        '<h4>🏷️ 推荐话题</h4><div style="display:flex;flex-wrap:wrap;gap:4px;"><span class="tag tag-yellow">#篮球训练</span><span class="tag tag-yellow">#运球教学</span><span class="tag tag-yellow">#基本功</span><span class="tag tag-yellow">#U9</span><span class="tag tag-yellow">#每日打卡</span></div>';
+    document.getElementById('modal').classList.add('show');
+}
+
+// 搜索过滤
+function filterList(type,keyword){
+    if(type==='fitness'){
+        renderFitnessList(keyword);
+    }else if(type==='basic'){
+        renderBasicList(keyword);
+    }
+}
+
+// 渲染热身列表
+function renderWarmupList(){
+    var container=document.getElementById('warmupList');
+    if(!container)return;
+    var warmups = fitness.filter(function(f){return f.level==='热身';});
+    var html='<div class="action-grid">';
+    warmups.forEach(function(w){
+        html+='<div class="action-item" onclick="showWarmup('+w.id+')" style="border-color:rgba(76,175,80,0.4);"><h4 style="color:#81c784;">'+w.name+'</h4><p>'+w.sets+'</p><span class="tag tag-green">热身</span></div>';
+    });
+    html+='</div>';
+    container.innerHTML=html;
+}
+
+// 渲染拉伸列表
+function renderStretchList(){
+    var container=document.getElementById('stretchList');
+    if(!container)return;
+    var stretches = fitness.filter(function(f){return f.level==='拉伸';});
+    var html='<div class="action-grid">';
+    stretches.forEach(function(s){
+        html+='<div class="action-item" onclick="showStretch('+s.id+')" style="border-color:rgba(0,188,212,0.4);"><h4 style="color:#4dd0e1;">'+s.name+'</h4><p>'+s.sets+'</p><span class="tag" style="background:rgba(0,188,212,0.25);color:#4dd0e1;">拉伸</span></div>';
+    });
+    html+='</div>';
+    container.innerHTML=html;
+}
+
+// 显示热身详情
+function showWarmup(id){
+    var a=fitness.find(function(x){return x.id===id});
+    if(!a)return;
+    document.getElementById('modalTitle').innerHTML='🔥 '+a.name+' <span class="tag tag-green">热身动作</span>';
+    var steps=a.steps.split('|').map(function(s,i){return '<li><span style="color:#81c784;font-weight:600;">'+(i+1)+'.</span> '+s+'</li>';}).join('');
+    var tips=a.tips.split('|').map(function(s){return '<li>'+s+'</li>';}).join('');
+    var errors=a.error.split('|').map(function(s){return '<li>'+s+'</li>';}).join('');
+    document.getElementById('modalBody').innerHTML=
+        '<h4>训练量</h4><p class="highlight" style="font-size:14px;">'+a.sets+'</p>'+
+        '<h4>详细步骤</h4><ul style="list-style:none;padding:0;">'+steps+'</ul>'+
+        '<h4>要点提示</h4><ol>'+tips+'</ol>'+
+        '<h4>常见错误</h4><ol>'+errors+'</ol>'+
+        '<h4>📹 抖音怎么拍</h4><p>'+a.video+'</p>'+
+        '<div style="background:rgba(76,175,80,0.15);padding:12px;border-radius:10px;margin-top:12px;"><p style="color:#81c784;font-size:12px;">💡 这个动作可以激活踝关节和跟腱，预防训练后小腿疼痛！</p></div>';
+    document.getElementById('modal').classList.add('show');
+}
+
+// 显示拉伸详情
+function showStretch(id){
+    var a=fitness.find(function(x){return x.id===id});
+    if(!a)return;
+    document.getElementById('modalTitle').innerHTML='🤸 '+a.name+' <span class="tag" style="background:rgba(0,188,212,0.25);color:#4dd0e1;">拉伸动作</span>';
+    var steps=a.steps.split('|').map(function(s,i){return '<li><span style="color:#4dd0e1;font-weight:600;">'+(i+1)+'.</span> '+s+'</li>';}).join('');
+    var tips=a.tips.split('|').map(function(s){return '<li>'+s+'</li>';}).join('');
+    var errors=a.error.split('|').map(function(s){return '<li>'+s+'</li>';}).join('');
+    document.getElementById('modalBody').innerHTML=
+        '<h4>训练量</h4><p class="highlight" style="font-size:14px;">'+a.sets+'</p>'+
+        '<h4>详细步骤</h4><ul style="list-style:none;padding:0;">'+steps+'</ul>'+
+        '<h4>要点提示</h4><ol>'+tips+'</ol>'+
+        '<h4>常见错误</h4><ol>'+errors+'</ol>'+
+        '<h4>📹 抖音怎么拍</h4><p>'+a.video+'</p>'+
+        '<div style="background:rgba(0,188,212,0.15);padding:12px;border-radius:10px;margin-top:12px;"><p style="color:#4dd0e1;font-size:12px;">💡 训练结束后马上拉伸小腿和跟腱，可以有效防止脚后跟疼！</p></div>';
+    document.getElementById('modal').classList.add('show');
+}
+
+// 初始化 - 确保所有函数都被调用
+window.addEventListener('DOMContentLoaded',function(){
+    renderFitnessList();
+    renderBasicList();
+    renderParentList();
+    renderComboList();
+    renderScriptList();
+    renderWeek();
+    renderToday();
+    renderWarmupList();
+    renderStretchList();
+});
+
+// 同时立即执行（防止DOMContentLoaded已错过）
+renderFitnessList();
+renderBasicList();
+renderParentList();
+renderComboList();
+renderScriptList();
+renderWeek();
+renderToday();
+renderWarmupList();
+renderStretchList();
+</script>
+</body>
+</html>
