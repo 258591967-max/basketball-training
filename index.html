@@ -698,13 +698,13 @@ var tags = ["#篮球少年","#U9","#篮球训练","#每日打卡","#成长记录
 
 // ===== 周计划 =====
 var week = [
-{day:"周日",emoji:"🏀",type:"自己训练",canShoot:true,content:"🏃 热身（脚踝绕环+踮脚走）+ 💪 体能（深蹲+提踵+平板支撑）+ 🏀 基本功（换手+胯下8字）+ 🔥 组合（胯下+背后+胯下）+ 🤸 拉伸（小腿+跟腱）"},
-{day:"周一",emoji:"🏀",type:"自己训练",canShoot:true,content:"🏃 热身（踝关节弹震+跟腱激活）+ 💪 体能（平板支撑+折返跑）+ 🏀 基本功（投篮练习）+ 🔥 组合（后撤步+跳投）+ 🤸 拉伸（小腿后侧+比目鱼肌）"},
-{day:"周二",emoji:"🏀",type:"亲子配合",canShoot:true,content:"🏃 热身（脚踝绕环+小腿三方向）+ 🏀 基本功（运球热身）+ 👨‍👦 亲子配合（高绕球上反篮+传球突破）+ 🤸 拉伸（跟腱+脚底筋膜）"},
-{day:"周三",emoji:"🏫",type:"校队训练",canShoot:false,content:"🏃 热身（跟腱激活）+ 🏫 跟随校队计划 + 🤸 拉伸（自训小腿+脚踝）"},
-{day:"周四",emoji:"🏫",type:"校队训练",canShoot:false,content:"🏃 热身（踮脚走+踝关节弹震）+ 🏫 跟随校队计划 + 🤸 拉伸（自训小腿后侧）"},
-{day:"周五",emoji:"🏀",type:"机构训练",canShoot:true,content:"🏃 热身（脚踝绕环）+ 🏀 跟随机构教练技巧强化 + 🤸 拉伸（问教练小腿拉伸）"},
-{day:"周六",emoji:"🏀",type:"机构训练/比赛",canShoot:true,content:"🏃 热身前（踝关节激活）+ 🏀 机构训练/比赛 + 🤸 赛后重点拉伸（小腿+跟腱+脚底）"}
+{day:"周日",emoji:"🏀",type:"自己训练",canShoot:true,content:"自己练日：约40分钟，训练量适中，侧重心肺耐力+基本功"},
+{day:"周一",emoji:"🏀",type:"自己训练",canShoot:true,content:"自己练日：约40分钟，训练量适中，侧重体能+基本功"},
+{day:"周二",emoji:"🏀",type:"自己训练",canShoot:true,content:"自己练日：约40分钟，侧重亲子配合+基本功"},
+{day:"周三",emoji:"🏫",type:"校队训练",canShoot:false,content:"校队训练日：回家后做康复热身+拉伸，约10分钟"},
+{day:"周四",emoji:"🏫",type:"校队训练",canShoot:false,content:"校队训练日：回家后做康复热身+拉伸，约10分钟"},
+{day:"周五",emoji:"🏫",type:"机构训练",canShoot:false,content:"培训班日：课前激活+课后拉伸，约10分钟"},
+{day:"周六",emoji:"🏫",type:"机构训练",canShoot:true,content:"培训班/比赛日：课前激活+课后重点拉伸，约10分钟"}
 ];
 
 // ===== 功能函数 =====
@@ -878,93 +878,155 @@ function renderToday(){
     var dateStr=now.getFullYear()+'年'+(now.getMonth()+1)+'月'+now.getDate()+'日';
     var dateEl=document.getElementById('currentDate');
     if(dateEl)dateEl.textContent=dateStr;
-    
+
     var days=['周日','周一','周二','周三','周四','周五','周六'];
     var today=new Date().getDay();
     var dayName=days[today];
     var todayData=week[today];
     var dayBadge=document.getElementById('dayBadge');
     if(dayBadge)dayBadge.textContent='今天 '+dayName;
-    
+
     var container=document.getElementById('todayContent');
     if(!container)return;
-    var html='<div class="today-hero"><h2>'+todayData.emoji+' '+dayName+'训练</h2><div class="type">'+(todayData.canShoot?'🎬 可拍抖音':'🎯 专注训练')+' · '+todayData.type+'</div><p>'+todayData.content+'</p></div>';
-    
-    // 今日热身 - 针对小腿脚踝
-    var warmupList = fitness.filter(function(f){return f.level==='热身';}).slice(0,3);
-    html+='<div class="today-section" style="border-left-color:#4caf50;background:rgba(76,175,80,0.1);"><h3>🔥 训练前热身（必做！防止小腿脚踝疼）</h3><p>';
-    warmupList.forEach(function(f){
-        html+='<span class="tag tag-green" style="cursor:pointer;" onclick="showFitness('+f.id+')">'+f.name+' '+f.sets+'</span>';
-    });
-    html+='</p><p style="font-size:13px;color:#81c784;margin-top:6px;">💡 每次训练前都要做！特别是踝关节和跟腱激活</p></div>';
-    
-    // 今日体能 - 排除热身、拉伸和心肺
-    var todayFitness=fitness.filter(function(f){return f.level==='基础'||f.level==='进阶';}).slice(0,4);
-    html+='<div class="today-section"><h3>💪 今日体能</h3><p>';
-    todayFitness.forEach(function(f,i){
-        html+='<span class="tag tag-blue" style="cursor:pointer;" onclick="showFitness('+f.id+')">'+f.name+' '+f.sets+'</span>';
-    });
-    html+='</p></div>';
-    
-    // 今日心肺耐力 - 提升比赛体能
-    var cardioList = fitness.filter(function(f){return f.level==='心肺';});
-    if(cardioList.length>0){
-        var todayCardio = [];
-        var shuffled = cardioList.slice().sort(function(){return Math.random()-0.5;});
-        todayCardio = shuffled.slice(0,3);
-        html+='<div class="today-section" style="border-left-color:#e94560;background:rgba(233,69,96,0.1);"><h3>🏃 今日心肺耐力（提升比赛体能）</h3><p>';
-        todayCardio.forEach(function(f){
-            html+='<span class="tag tag-red" style="cursor:pointer;" onclick="showFitness('+f.id+')">'+f.name+' '+f.sets+'</span>';
+
+    // 顶部hero卡片
+    var typeLabel = todayData.type==='自己训练'?'🏠 自己练日':todayData.type==='校队训练'?'🏫 校队训练日':'🏫 培训班日';
+    var html='<div class="today-hero"><h2>'+todayData.emoji+' '+dayName+'训练</h2><div class="type">'+typeLabel+' · '+todayData.type+'</div><p>'+todayData.content+'</p></div>';
+
+    if(todayData.type==='自己训练'){
+        // ========== 自己练日：约40分钟 ==========
+        // 1. 热身（3个，约5分钟）
+        var warmupList = fitness.filter(function(f){return f.level==='热身';});
+        warmupList = warmupList.slice().sort(function(){return Math.random()-0.5;}).slice(0,3);
+        html+='<div class="today-section" style="border-left-color:#4caf50;background:rgba(76,175,80,0.1);"><h3>🔥 热身（约5分钟）</h3><p>';
+        warmupList.forEach(function(f){
+            html+='<span class="tag tag-green" style="cursor:pointer;" onclick="showFitness('+f.id+')">'+f.name+' '+f.sets+'</span>';
         });
-        html+='</p><p style="font-size:13px;color:#ff8a80;margin-top:6px;">💡 心肺训练提升比赛耐力，减少疲劳感！循序渐进增加训练量</p></div>';
-    }
-    
-    // 今日基本功
-    var todayBasic=basic.slice(0,4);
-    html+='<div class="today-section"><h3>🏀 今日基本功</h3><p>';
-    todayBasic.forEach(function(b,i){
-        html+='<span class="tag tag-purple" style="cursor:pointer;" onclick="showBasic('+b.id+')">'+b.name+' '+b.sets+'</span>';
-    });
-    html+='</p></div>';
-    
-    if(todayData.canShoot){
-        // 今日亲子配合 - 修复变量名 bug
-        var parentItem=parentTraining[today%parentTraining.length];
-        if(parentItem){
-            var parentSteps=parentItem.steps.split('|').map(function(s,i){return '<div class="step-badge"><span class="num">'+(i+1)+'</span><span class="text">'+s+'</span></div>';}).join('');
-            var douyinHtml='';
-            if(parentItem.douyin){
-                douyinHtml='<div class="douyin-card" style="margin-top:10px;"><h4>🎬 今日抖音方案</h4><div class="title-suggest">📌 '+parentItem.douyin.title+'</div><div class="script-text">开场："'+parentItem.douyin.open+'"</div><div class="script-text">结尾："'+parentItem.douyin.close+'"</div></div>';
-            }
-            html+='<div class="today-section" style="border-left-color:#e94560;"><h3>👨‍👦 今日亲子配合</h3><p style="font-size: 15px;color:#ffd740;font-weight:600;margin-bottom:6px;">'+parentItem.name+' · '+parentItem.sets+'</p>'+parentSteps+douyinHtml+'</div>';
+        html+='</p></div>';
+
+        // 2. 体能（2个，约8分钟）
+        var fitnessList = fitness.filter(function(f){return f.level==='基础'||f.level==='进阶';});
+        fitnessList = fitnessList.slice().sort(function(){return Math.random()-0.5;}).slice(0,2);
+        html+='<div class="today-section"><h3>💪 体能（约8分钟）</h3><p>';
+        fitnessList.forEach(function(f){
+            html+='<span class="tag tag-blue" style="cursor:pointer;" onclick="showFitness('+f.id+')">'+f.name+' '+f.sets+'</span>';
+        });
+        html+='</p></div>';
+
+        // 3. 心肺耐力（2个，约10分钟）
+        var cardioList = fitness.filter(function(f){return f.level==='心肺';});
+        if(cardioList.length>0){
+            var todayCardio = cardioList.slice().sort(function(){return Math.random()-0.5;}).slice(0,2);
+            html+='<div class="today-section" style="border-left-color:#e94560;background:rgba(233,69,96,0.1);"><h3>🏃 心肺耐力（约10分钟）</h3><p>';
+            todayCardio.forEach(function(f){
+                html+='<span class="tag tag-red" style="cursor:pointer;" onclick="showFitness('+f.id+')">'+f.name+' '+f.sets+'</span>';
+            });
+            html+='</p><p style="font-size:13px;color:#ff8a80;margin-top:6px;">💡 提升比赛耐力，减少疲劳感</p></div>';
         }
-        
-        // 今日单人组合
-        var comboItem=combos[today%combos.length];
-        if(comboItem){
-            var comboSteps=comboItem.steps.split('|').map(function(s,i){return '<div class="step-badge" style="background:linear-gradient(135deg,#ff9800,#ffb74d);"><span class="num">'+(i+1)+'</span><span class="text">'+s+'</span></div>';}).join('');
-            var douyinSoloHtml='';
-            if(comboItem.douyin){
-                douyinSoloHtml='<div class="douyin-card" style="margin-top:10px;"><h4>🎬 抖音方案</h4><div class="title-suggest">📌 '+comboItem.douyin.title+'</div><div class="script-text">开场："'+comboItem.douyin.open+'"</div><div class="script-text">结尾："'+comboItem.douyin.close+'"</div></div>';
+
+        // 4. 基本功（2个，约6分钟）
+        var basicList = basic.slice().sort(function(){return Math.random()-0.5;}).slice(0,2);
+        html+='<div class="today-section"><h3>🏀 基本功（约6分钟）</h3><p>';
+        basicList.forEach(function(b){
+            html+='<span class="tag tag-purple" style="cursor:pointer;" onclick="showBasic('+b.id+')">'+b.name+' '+b.sets+'</span>';
+        });
+        html+='</p></div>';
+
+        // 5. 亲子 或 单人组合（二选一，约10分钟）
+        if(today===0 || today===2){
+            // 周日、周二：亲子配合
+            var parentItem=parentTraining[Math.floor(Math.random()*parentTraining.length)];
+            if(parentItem){
+                var parentSteps=parentItem.steps.split('|').map(function(s,i){return '<div class="step-badge"><span class="num">'+(i+1)+'</span><span class="text">'+s+'</span></div>';}).join('');
+                var douyinHtml='';
+                if(parentItem.douyin){
+                    douyinHtml='<div class="douyin-card" style="margin-top:10px;"><h4>🎬 抖音方案</h4><div class="title-suggest">📌 '+parentItem.douyin.title+'</div><div class="script-text">开场："'+parentItem.douyin.open+'"</div><div class="script-text">结尾："'+parentItem.douyin.close+'"</div></div>';
+                }
+                html+='<div class="today-section" style="border-left-color:#e94560;"><h3>👨‍👦 亲子配合（约10分钟）</h3><p style="font-size: 15px;color:#ffd740;font-weight:600;margin-bottom:6px;">'+parentItem.name+' · '+parentItem.sets+'</p>'+parentSteps+douyinHtml+'</div>';
             }
-            html+='<div class="today-section" style="border-left-color:#ff9800;"><h3>🔥 今日单人组合</h3><p style="font-size: 15px;color:#ffab40;font-weight:600;margin-bottom:6px;">'+comboItem.name+' · '+comboItem.sets+'</p>'+comboSteps+douyinSoloHtml+'</div>';
+        } else {
+            // 周一：单人组合
+            var comboItem=combos[Math.floor(Math.random()*combos.length)];
+            if(comboItem){
+                var comboSteps=comboItem.steps.split('|').map(function(s,i){return '<div class="step-badge" style="background:linear-gradient(135deg,#ff9800,#ffb74d);"><span class="num">'+(i+1)+'</span><span class="text">'+s+'</span></div>';}).join('');
+                var douyinSoloHtml='';
+                if(comboItem.douyin){
+                    douyinSoloHtml='<div class="douyin-card" style="margin-top:10px;"><h4>🎬 抖音方案</h4><div class="title-suggest">📌 '+comboItem.douyin.title+'</div><div class="script-text">开场："'+comboItem.douyin.open+'"</div><div class="script-text">结尾："'+comboItem.douyin.close+'"</div></div>';
+                }
+                html+='<div class="today-section" style="border-left-color:#ff9800;"><h3>🔥 单人组合（约10分钟）</h3><p style="font-size: 15px;color:#ffab40;font-weight:600;margin-bottom:6px;">'+comboItem.name+' · '+comboItem.sets+'</p>'+comboSteps+douyinSoloHtml+'</div>';
+            }
         }
-        
+
+        // 6. 拉伸（3个，约5分钟）
+        var stretchList = fitness.filter(function(f){return f.level==='拉伸';});
+        stretchList = stretchList.slice().sort(function(){return Math.random()-0.5;}).slice(0,3);
+        html+='<div class="today-section" style="border-left-color:#00bcd4;background:rgba(0,188,212,0.08);margin-top:16px;"><h3>🤸 拉伸放松（约5分钟）</h3><p>';
+        stretchList.forEach(function(f){
+            html+='<span class="tag" style="background:rgba(0,188,212,0.25);color:#4dd0e1;cursor:pointer;" onclick="showFitness('+f.id+')">'+f.name+' '+f.sets+'</span>';
+        });
+        html+='</p><p style="font-size:13px;color:#4dd0e1;margin-top:6px;">💡 训练完马上拉伸！小腿和跟腱是重点</p></div>';
+
         // 今日标签
         html+='<div class="today-section" style="border-left-color:#9c27b0;"><h3>🏷️ 今日话题</h3><p>';
         var tagPool=["#篮球少年","#U9","#篮球训练","#每日打卡","#成长记录","#亲子篮球","#父子篮球","#基本功"];
         tagPool.slice(0,6).forEach(function(t){html+='<span class="tag tag-yellow">'+t+'</span>';});
         html+='</p></div>';
-        
-        // 今日拉伸 - 针对小腿脚踝跟腱
-        var stretchList = fitness.filter(function(f){return f.level==='拉伸';}).slice(0,3);
-        html+='<div class="today-section" style="border-left-color:#00bcd4;background:rgba(0,188,212,0.08);margin-top:16px;"><h3>🤸 训练后拉伸（必做！防止小腿脚踝疼）</h3><p>';
-        stretchList.forEach(function(f){
-            html+='<span class="tag" style="background:rgba(0,188,212,0.25);color:#4dd0e1;cursor:pointer;" onclick="showFitness('+f.id+')">'+f.name+' '+f.sets+'</span>';
-        });
-        html+='</p><p style="font-size:13px;color:#4dd0e1;margin-top:6px;">💡 训练结束后马上拉伸！小腿和跟腱是重点！</p></div>';
+
+        // 预计时间
+        html+='<div style="background:rgba(255,215,64,0.1);border-radius:12px;padding:12px;margin-top:12px;border:1px solid rgba(255,215,64,0.3);"><p style="font-size:15px;color:#ffd740;font-weight:600;">⏱️ 预计训练时间：约40-45分钟</p><p style="font-size:13px;color:#b0bec5;margin-top:4px;">练完写作业效率更高哦！</p></div>';
+
+    } else {
+        // ========== 校队/培训班日：约10分钟 ==========
+        if(todayData.type==='校队训练'){
+            // 校队训练完回家：康复热身+拉伸
+            html+='<div style="background:rgba(76,175,80,0.1);border-radius:12px;padding:12px;margin-bottom:12px;border-left:4px solid #4caf50;"><p style="font-size:15px;color:#81c784;font-weight:600;">🏫 今天有校队训练，回家后做这些就够了</p></div>';
+
+            // 训练后拉伸（3个）
+            var stretchList = fitness.filter(function(f){return f.level==='拉伸';});
+            stretchList = stretchList.slice().sort(function(){return Math.random()-0.5;}).slice(0,3);
+            html+='<div class="today-section" style="border-left-color:#00bcd4;background:rgba(0,188,212,0.08);"><h3>🤸 训练后拉伸（必做！）</h3><p>';
+            stretchList.forEach(function(f){
+                html+='<span class="tag" style="background:rgba(0,188,212,0.25);color:#4dd0e1;cursor:pointer;" onclick="showFitness('+f.id+')">'+f.name+' '+f.sets+'</span>';
+            });
+            html+='</p><p style="font-size:13px;color:#4dd0e1;margin-top:6px;">💡 校队训练完一定要拉伸！防止第二天肌肉酸痛</p></div>';
+
+            // 踝关节康复（2个）
+            var rehabList = fitness.filter(function(f){return f.level==='热身';});
+            rehabList = rehabList.slice().sort(function(){return Math.random()-0.5;}).slice(0,2);
+            html+='<div class="today-section" style="border-left-color:#4caf50;background:rgba(76,175,80,0.1);"><h3>🔥 踝关节激活放松</h3><p>';
+            rehabList.forEach(function(f){
+                html+='<span class="tag tag-green" style="cursor:pointer;" onclick="showFitness('+f.id+')">'+f.name+' '+f.sets+'</span>';
+            });
+            html+='</p></div>';
+
+            html+='<div style="background:rgba(255,215,64,0.1);border-radius:12px;padding:12px;margin-top:12px;border:1px solid rgba(255,215,64,0.3);"><p style="font-size:15px;color:#ffd740;font-weight:600;">⏱️ 预计时间：约10分钟</p><p style="font-size:13px;color:#b0bec5;margin-top:4px;">校队训练本身就消耗很大，回家好好休息拉伸就行</p></div>';
+
+        } else {
+            // 培训班日：课前激活+课后拉伸
+            html+='<div style="background:rgba(255,152,0,0.1);border-radius:12px;padding:12px;margin-bottom:12px;border-left:4px solid #ff9800;"><p style="font-size:15px;color:#ffb74d;font-weight:600;">🏫 今天有培训班' + (today===6?'，可能有比赛':'') + '</p></div>';
+
+            // 课前踝关节激活（2个）
+            var warmupList = fitness.filter(function(f){return f.level==='热身';});
+            warmupList = warmupList.slice().sort(function(){return Math.random()-0.5;}).slice(0,2);
+            html+='<div class="today-section" style="border-left-color:#ff9800;background:rgba(255,152,0,0.08);"><h3>🔥 课前踝关节激活</h3><p>';
+            warmupList.forEach(function(f){
+                html+='<span class="tag tag-orange" style="cursor:pointer;" onclick="showFitness('+f.id+')">'+f.name+' '+f.sets+'</span>';
+            });
+            html+='</p><p style="font-size:13px;color:#ffb74d;margin-top:6px;">💡 去培训班前花3分钟激活脚踝</p></div>';
+
+            // 课后拉伸（3个）
+            var stretchList = fitness.filter(function(f){return f.level==='拉伸';});
+            stretchList = stretchList.slice().sort(function(){return Math.random()-0.5;}).slice(0,3);
+            html+='<div class="today-section" style="border-left-color:#00bcd4;background:rgba(0,188,212,0.08);"><h3>🤸 课后拉伸放松</h3><p>';
+            stretchList.forEach(function(f){
+                html+='<span class="tag" style="background:rgba(0,188,212,0.25);color:#4dd0e1;cursor:pointer;" onclick="showFitness('+f.id+')">'+f.name+' '+f.sets+'</span>';
+            });
+            html+='</p><p style="font-size:13px;color:#4dd0e1;margin-top:6px;">💡 培训完一定要拉伸'+(today===6?'，比赛后更要重点拉伸小腿和跟腱':'')+'！</p></div>';
+
+            html+='<div style="background:rgba(255,215,64,0.1);border-radius:12px;padding:12px;margin-top:12px;border:1px solid rgba(255,215,64,0.3);"><p style="font-size:15px;color:#ffd740;font-weight:600;">⏱️ 预计时间：约10分钟</p><p style="font-size:13px;color:#b0bec5;margin-top:4px;">培训班教练会安排主要训练内容，你只要做好激活和拉伸</p></div>';
+        }
     }
-    
+
     container.innerHTML=html;
 }
 
