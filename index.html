@@ -898,13 +898,26 @@ function renderToday(){
     });
     html+='</p><p style="font-size:13px;color:#81c784;margin-top:6px;">💡 每次训练前都要做！特别是踝关节和跟腱激活</p></div>';
     
-    // 今日体能 - 排除热身和拉伸
-    var todayFitness=fitness.filter(function(f){return f.level==='基础'||f.level==='进阶'||f.level==='心肺';}).slice(0,4);
+    // 今日体能 - 排除热身、拉伸和心肺
+    var todayFitness=fitness.filter(function(f){return f.level==='基础'||f.level==='进阶';}).slice(0,4);
     html+='<div class="today-section"><h3>💪 今日体能</h3><p>';
     todayFitness.forEach(function(f,i){
         html+='<span class="tag tag-blue" style="cursor:pointer;" onclick="showFitness('+f.id+')">'+f.name+' '+f.sets+'</span>';
     });
     html+='</p></div>';
+    
+    // 今日心肺耐力 - 提升比赛体能
+    var cardioList = fitness.filter(function(f){return f.level==='心肺';});
+    if(cardioList.length>0){
+        var todayCardio = [];
+        var shuffled = cardioList.slice().sort(function(){return Math.random()-0.5;});
+        todayCardio = shuffled.slice(0,3);
+        html+='<div class="today-section" style="border-left-color:#e94560;background:rgba(233,69,96,0.1);"><h3>🏃 今日心肺耐力（提升比赛体能）</h3><p>';
+        todayCardio.forEach(function(f){
+            html+='<span class="tag tag-red" style="cursor:pointer;" onclick="showFitness('+f.id+')">'+f.name+' '+f.sets+'</span>';
+        });
+        html+='</p><p style="font-size:13px;color:#ff8a80;margin-top:6px;">💡 心肺训练提升比赛耐力，减少疲劳感！循序渐进增加训练量</p></div>';
+    }
     
     // 今日基本功
     var todayBasic=basic.slice(0,4);
