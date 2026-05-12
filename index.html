@@ -232,7 +232,7 @@ body {
 }
 .douyin-card .script-text { font-size: 15px; color: #e0e0e0; font-style: italic; line-height: 1.8; }
 .douyin-card .video-tip { 
-    font-size: 10px; 
+    font-size: 13px; 
     color: #82d4ff;
     margin-top: 8px;
     padding-top: 8px;
@@ -289,7 +289,7 @@ body {
 .week-item h4 { font-size: 16px; color: #ffd740; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
 .week-item p { font-size: 16px; color: #b0bec5; }
 .badge {
-    font-size: 10px;
+    font-size: 13px;
     padding: 3px 8px;
     border-radius: 10px;
     margin-left: 6px;
@@ -768,7 +768,7 @@ function renderComboList(){
         if(c.douyin){
             douyinHtml='<div class="douyin-card"><h4>🎬 抖音方案</h4><div class="title-suggest">📌 '+c.douyin.title+'</div><div class="script-text">开场："'+c.douyin.open+'"</div><div class="script-text">结尾："'+c.douyin.close+'"</div></div>';
         }
-        html+='<div class="combo-card" onclick="showCombo('+c.id+')"><h4>'+c.name+' <span class="tag tag-red">'+c.diff+'</span> <span class="tag tag-orange">'+c.sets+'</span></h4><ul class="steps">'+steps+'</ul><div style="font-size:10px;color:#82d4ff;margin-top:6px;">📹 '+c.video+'</div>'+douyinHtml+'</div>';
+        html+='<div class="combo-card" onclick="showCombo('+c.id+')"><h4>'+c.name+' <span class="tag tag-red">'+c.diff+'</span> <span class="tag tag-orange">'+c.sets+'</span></h4><ul class="steps">'+steps+'</ul><div style="font-size:13px;color:#82d4ff;margin-top:6px;">📹 '+c.video+'</div>'+douyinHtml+'</div>';
     });
     container.innerHTML=html;
     // 第5页也渲染
@@ -885,7 +885,7 @@ function renderToday(){
     warmupList.forEach(function(f){
         html+='<span class="tag tag-green" style="cursor:pointer;" onclick="showFitness('+f.id+')">'+f.name+' '+f.sets+'</span>';
     });
-    html+='</p><p style="font-size:10px;color:#81c784;margin-top:6px;">💡 每次训练前都要做！特别是踝关节和跟腱激活</p></div>';
+    html+='</p><p style="font-size:13px;color:#81c784;margin-top:6px;">💡 每次训练前都要做！特别是踝关节和跟腱激活</p></div>';
     
     // 今日体能 - 排除热身和拉伸
     var todayFitness=fitness.filter(function(f){return f.level==='基础'||f.level==='进阶';}).slice(0,4);
@@ -938,7 +938,7 @@ function renderToday(){
         stretchList.forEach(function(f){
             html+='<span class="tag" style="background:rgba(0,188,212,0.25);color:#4dd0e1;cursor:pointer;" onclick="showFitness('+f.id+')">'+f.name+' '+f.sets+'</span>';
         });
-        html+='</p><p style="font-size:10px;color:#4dd0e1;margin-top:6px;">💡 训练结束后马上拉伸！小腿和跟腱是重点！</p></div>';
+        html+='</p><p style="font-size:13px;color:#4dd0e1;margin-top:6px;">💡 训练结束后马上拉伸！小腿和跟腱是重点！</p></div>';
     }
     
     container.innerHTML=html;
