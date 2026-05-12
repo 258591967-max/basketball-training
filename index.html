@@ -266,7 +266,7 @@ body {
 .recommend-link .name { font-size: 15px; color: #ffd740; font-weight: 700; }
 
 /* 标签 */
-.tag { display: inline-block; font-size: 10px; padding: 3px 8px; border-radius: 8px; margin-right: 4px; margin-bottom: 4px; }
+.tag { display: inline-block; font-size: 14px; padding: 5px 12px; border-radius: 8px; margin-right: 4px; margin-bottom: 6px; }
 .tag-green { background: rgba(76,175,80,0.3); color: #81c784; }
 .tag-blue { background: rgba(33,150,243,0.3); color: #64b5f6; }
 .tag-red { background: rgba(233,69,96,0.3); color: #ff8a80; }
@@ -891,7 +891,7 @@ function renderToday(){
     var todayFitness=fitness.filter(function(f){return f.level==='基础'||f.level==='进阶';}).slice(0,4);
     html+='<div class="today-section"><h3>💪 今日体能</h3><p>';
     todayFitness.forEach(function(f,i){
-        html+='<span class="tag">'+f.name+' '+f.sets+'</span>';
+        html+='<span class="tag tag-blue" style="cursor:pointer;" onclick="showFitness('+f.id+')">'+f.name+' '+f.sets+'</span>';
     });
     html+='</p></div>';
     
@@ -899,7 +899,7 @@ function renderToday(){
     var todayBasic=basic.slice(0,4);
     html+='<div class="today-section"><h3>🏀 今日基本功</h3><p>';
     todayBasic.forEach(function(b,i){
-        html+='<span class="tag">'+b.name+' '+b.sets+'</span>';
+        html+='<span class="tag tag-purple" style="cursor:pointer;" onclick="showBasic('+b.id+')">'+b.name+' '+b.sets+'</span>';
     });
     html+='</p></div>';
     
